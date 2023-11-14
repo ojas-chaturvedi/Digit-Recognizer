@@ -1,0 +1,4 @@
+\contentsline {section}{\numberline {}Idea 1: Autonomous Drone Traffic Management System}{1}{}%
+\contentsline {section}{\numberline {}Idea 2: AI-Based Precision Medicine Platform}{2}{}%
+\contentsline {section}{\numberline {}Idea 3: Smart City Infrastructure and Services Integration Platform}{3}{}%
+\contentsline {section}{\numberline {}Idea 4: Ocean Cleanup and Monitoring Autonomous Fleet}{4}{}%
