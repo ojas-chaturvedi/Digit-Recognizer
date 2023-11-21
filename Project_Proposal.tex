@@ -10,6 +10,7 @@
 
 % Set the page size and margins
 \geometry{letterpaper, portrait, margin=1in}
+\setlength{\droptitle}{-1in}
 
 % Define a new environment for the problems that takes one argument for the problem number
 \newenvironment{problem}[1]{
@@ -37,72 +38,84 @@
 \renewcommand{\thesection}{}
 
 % Title page info
-\title{Project Proposal \\ \large Capstone: The Art of Approximation}
+\title{AI-Based Precision Medicine Platform -- Proposal \\ \large Capstone: The Art of Approximation}
 \author{Ojas Chaturvedi, Zaheen Jamil, Saianshul Vishnubhaktula, Ritwik Jayaraman}
 \date{November 21, 2023}
 
 % ------------------------------------------------------------------------------
 \begin{document}
 
-% Title page
-\begin{titlingpage}
-    \maketitle
-    \tableofcontents
-\end{titlingpage}
+% % Title page
+% \begin{titlingpage}
+% \end{titlingpage}
+\maketitle
 
 % ------------------------------------------------------------------------------
 
-\newpage \section{Idea 2: AI-Based Precision Medicine Platform}
-    \textbf{Purpose:} Build an AI-powered platform that can analyze genetic data, medical records, and research to provide personalized treatment recommendations. \\ \\
-    \textbf{Member 1: Bioinformatics Scientist}
-        \begin{itemize}
-            \item Develop algorithms for processing and analyzing large genomic datasets.
-            \item Work on integrating genetic data with patient electronic health records (EHR).
-            \item Lead the research on disease markers and drug response prediction.
-        \end{itemize}
-    \textbf{Member 2: Machine Learning Engineer}
-        \begin{itemize}
-            \item Build predictive models for disease risk and treatment outcomes.
-            \item Implement natural language processing to extract insights from medical literature.
-            \item Ensure the interpretability and fairness of AI models.
-        \end{itemize}
-    \textbf{Member 3: Data Security Expert}
-        \begin{itemize}
-            \item Design a secure infrastructure to protect sensitive health data.
-            \item Ensure compliance with HIPAA and other health data protection regulations.
-            \item Implement robust access controls and audit trails.
-        \end{itemize}
-    \textbf{Member 4: Clinical Specialist and User Experience Designer}
-        \begin{itemize}
-            \item Provide clinical expertise to guide the platform's development.
-            \item Design the user interface for clinicians and patients, focusing on usability.
-            \item Facilitate clinical trials and collect user feedback for continuous improvement.
-        \end{itemize}
-
-\newpage \section{Proposal}
-    \begin{enumerate}
-        \item \textbf{Language:} Python, a simple and popular language for machine learning and data science due to its extensive libraries and frameworks.
-        \item \textbf{Objective:} Build an AI-powered platform that can analyze genetic data, medical records, and research to provide personalized treatment recommendations.
-        \item \textbf{Implementation:}
+\begin{enumerate}
+    \item \textbf{Language:} Python, a simple and popular language for machine learning and data science due to its extensive libraries and frameworks
+    \item \textbf{Objective:} To build an AI-powered platform to analyze symptoms, previous medical records, and research to provide chances of diseases and then give personalized treatment recommendations
+    \item \textbf{Implementation:}
+        \begin{enumerate}
+            \item \textbf{Overview of steps:}
+                \begin{enumerate}
+                    \item \textbf{Data Collection:} Collect previous medical records and research data from various sources and databases
+                    \begin{enumerate}
+                        \item Ex: github.com/bruzwen/ddxplus
+                    \end{enumerate}
+                    \item \textbf{Data Processing:} Process the data to extract relevant features, such as removing stop works and blank lines, etc.
+                    \begin{enumerate}
+                        \item \textbf{Homomorphic Encryption} will protect sensitive health data instead of conforming to HIPAA and other health data protection regulations
+                    \end{enumerate}
+                    \item \textbf{Model Training:} Train machine learning models to predict disease risk and treatment outcomes
+                    \item \textbf{Model Deployment:} Deploy the models on a secure platform to be used by clinicians and patients
+                \end{enumerate}
+            \item \textbf{Libraries:}
             \begin{enumerate}
-                \item \textbf{Overview of steps:}
-                    \begin{enumerate}
-                        \item \textbf{Data Collection:} Collect genetic data, medical records, and research data from various sources and databases.
-                        \item \textbf{Data Processing:} Process the data to extract relevant features.
-                        \begin{enumerate}
-                            \item \textbf{Homomorphic Encryption} will be utilized to protect sensitive health data instead of having to conform to HIPAA and other health data protection regulations.
-                        \end{enumerate}
-                        \item \textbf{Model Training:} Train machine learning models to predict disease risk and treatment outcomes.
-                        \item \textbf{Model Deployment:} Deploy the models on a secure platform to be used by clinicians and patients.
-                    \end{enumerate}
-                \item \textbf{Libraries:} Matplotlib, Pandas, NumPy, Scikit-learn, TensorFlow, Keras, PyTorch, Flask, Django
-                \item \textbf{Manual Work:}
-                    \begin{enumerate}
-                        \item Building own model?
-                        \item Collection of dataset of diseases and percent chance of symptoms
-                    \end{enumerate}
+                \item \textbf{Pandas:} For data manipulation and analysis
+                \item \textbf{Matplotlib:} For visualizations
+                \item \textbf{NumPy:} For numerical computing and working with arrays
+                \item \textbf{Scikit-learn:} For data mining and analysis
+                \item \textbf{TensorFlow:} For complex neural network modeling
+                \item \textbf{PyTorch:} For natural language processing
+                \item \textbf{NLTK/spaCy:} For human language data with symptom inputs
+                \item \textbf{Flask/Django:} For backend web development
+                \item \textbf{SQLAlchemy:} For SQL databases and Object-Relational Mapping
             \end{enumerate}
+            \item \textbf{Manual Work:}
+                \begin{enumerate}
+                    \item Building the machine learning model
+                    \item Collection of datasets of diseases and percent chance of symptoms
+                    \begin{enumerate}
+                        \item Will contact local hospitals for datasets for the latest outcomes
+                    \end{enumerate}
+                    \item Homomorphic encryption implementation
+                    \item GUI development
+                    \begin{enumerate}
+                        \item Website or App
+                        \item Users can input their symptoms (and this will go into the dataset anonymously with homomorphic encryption)
+                        \item Users receive a percent chance of diagnosis based on these symptoms from the model we trained \\ \\
+                    \end{enumerate}
+                \end{enumerate}
+        \end{enumerate}
+    \item \textbf{Jobs:}
+    \begin{enumerate}
+        \item 2 Machine Learning/Data Collections Specialist
+        \begin{enumerate}
+            \item Make the Machine Learning/AI Model using Python and related libraries
+            \item Compile all data needed
+        \end{enumerate}
+        \item Data Security Specialist
+        \begin{enumerate}
+            \item Focuses on the implementation of homomorphic encryption
+        \end{enumerate}
+        \item GUI Developer
+        \begin{enumerate}
+            \item Makes the website/app and all of its functionality (UI)
+            \item Would work with a Data Security Expert for the implementation of homomorphic encryption
+        \end{enumerate}
     \end{enumerate}
+\end{enumerate}
 % ------------------------------------------------------------------------------
 \end{document}
 % ------------------------------------------------------------------------------
