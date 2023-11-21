@@ -1,0 +1,108 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{xcolor} % for color definitions
+\usepackage{mdframed} % for framing and shading the problems
+\usepackage{lipsum} % for generating text, remove in your actual document
+\usepackage{geometry} % for page layout
+\usepackage{titling} % for title page layout
+
+% Set the page size and margins
+\geometry{letterpaper, portrait, margin=1in}
+
+% Define a new environment for the problems that takes one argument for the problem number
+\newenvironment{problem}[1]{
+    \begin{mdframed}[backgroundcolor=gray!20, skipabove=\baselineskip, skipbelow=\baselineskip, nobreak=true, innerleftmargin=10pt, innerrightmargin=10pt, innertopmargin=10pt, innerbottommargin=10pt]
+    \textbf{Problem #1.}
+}{
+    \end{mdframed}
+}
+
+% Define a new environment for the proofs
+\newenvironment{proof}{
+    \begin{mdframed}[nobreak=true, innerleftmargin=10pt, innerrightmargin=10pt, innertopmargin=10pt, innerbottommargin=10pt]
+    \textbf{Proof.}
+}{
+    \hfill $\square$
+    \end{mdframed}
+}
+
+% Remove section numbering
+\makeatletter
+\renewcommand{\@seccntformat}[1]{}
+\makeatother
+
+% Remove table of contents numbering
+\renewcommand{\thesection}{}
+
+% Title page info
+\title{Project Proposal \\ \large Capstone: The Art of Approximation}
+\author{Ojas Chaturvedi, Zaheen Jamil, Saianshul Vishnubhaktula, Ritwik Jayaraman}
+\date{November 21, 2023}
+
+% ------------------------------------------------------------------------------
+\begin{document}
+
+% Title page
+\begin{titlingpage}
+    \maketitle
+    \tableofcontents
+\end{titlingpage}
+
+% ------------------------------------------------------------------------------
+
+\newpage \section{Idea 2: AI-Based Precision Medicine Platform}
+    \textbf{Purpose:} Build an AI-powered platform that can analyze genetic data, medical records, and research to provide personalized treatment recommendations. \\ \\
+    \textbf{Member 1: Bioinformatics Scientist}
+        \begin{itemize}
+            \item Develop algorithms for processing and analyzing large genomic datasets.
+            \item Work on integrating genetic data with patient electronic health records (EHR).
+            \item Lead the research on disease markers and drug response prediction.
+        \end{itemize}
+    \textbf{Member 2: Machine Learning Engineer}
+        \begin{itemize}
+            \item Build predictive models for disease risk and treatment outcomes.
+            \item Implement natural language processing to extract insights from medical literature.
+            \item Ensure the interpretability and fairness of AI models.
+        \end{itemize}
+    \textbf{Member 3: Data Security Expert}
+        \begin{itemize}
+            \item Design a secure infrastructure to protect sensitive health data.
+            \item Ensure compliance with HIPAA and other health data protection regulations.
+            \item Implement robust access controls and audit trails.
+        \end{itemize}
+    \textbf{Member 4: Clinical Specialist and User Experience Designer}
+        \begin{itemize}
+            \item Provide clinical expertise to guide the platform's development.
+            \item Design the user interface for clinicians and patients, focusing on usability.
+            \item Facilitate clinical trials and collect user feedback for continuous improvement.
+        \end{itemize}
+
+\newpage \section{Proposal}
+    \begin{enumerate}
+        \item \textbf{Language:} Python, a simple and popular language for machine learning and data science due to its extensive libraries and frameworks.
+        \item \textbf{Objective:} Build an AI-powered platform that can analyze genetic data, medical records, and research to provide personalized treatment recommendations.
+        \item \textbf{Implementation:}
+            \begin{enumerate}
+                \item \textbf{Overview of steps:}
+                    \begin{enumerate}
+                        \item \textbf{Data Collection:} Collect genetic data, medical records, and research data from various sources and databases.
+                        \item \textbf{Data Processing:} Process the data to extract relevant features.
+                        \begin{enumerate}
+                            \item \textbf{Homomorphic Encryption} will be utilized to protect sensitive health data instead of having to conform to HIPAA and other health data protection regulations.
+                        \end{enumerate}
+                        \item \textbf{Model Training:} Train machine learning models to predict disease risk and treatment outcomes.
+                        \item \textbf{Model Deployment:} Deploy the models on a secure platform to be used by clinicians and patients.
+                    \end{enumerate}
+                \item \textbf{Libraries:} Matplotlib, Pandas, NumPy, Scikit-learn, TensorFlow, Keras, PyTorch, Flask, Django
+                \item \textbf{Manual Work:}
+                    \begin{enumerate}
+                        \item Building own model?
+                        \item Collection of dataset of diseases and percent chance of symptoms
+                    \end{enumerate}
+            \end{enumerate}
+    \end{enumerate}
+% ------------------------------------------------------------------------------
+\end{document}
+% ------------------------------------------------------------------------------
