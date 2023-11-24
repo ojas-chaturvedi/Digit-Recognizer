@@ -37,40 +37,36 @@
 % Remove table of contents numbering
 \renewcommand{\thesection}{}
 
+
+
 % Title page info
-\title{AI-Based Precision Medicine Platform -- Proposal \\ \large Capstone: The Art of Approximation}
+\title{Detecting AI-Generated Text | Proposal \\ \large Capstone: The Art of Approximation}
 \author{Ojas Chaturvedi, Ritwik Jayaraman, Saianshul Vishnubhaktula, Zaheen Jamil}
-\date{November 21, 2023}
+\date{November 28, 2023}
 
 % ------------------------------------------------------------------------------
 \begin{document}
 
-% % Title page
-% \begin{titlingpage}
-% \end{titlingpage}
 \maketitle
 
 % ------------------------------------------------------------------------------
-
 \begin{enumerate}
     \item \textbf{Language:} Python, a simple and popular language for machine learning and data science due to its extensive libraries and frameworks
-    \item \textbf{Objective:} To build an AI-powered platform to analyze symptoms, previous medical records, and research to provide chances of diseases and then give personalized treatment recommendations
+    \item \textbf{Objective:} To develop a custom machine learning model which would be able to detect AI-generated text
     \item \textbf{Implementation:}
         \begin{enumerate}
             \item \textbf{Overview of steps:}
-                \begin{enumerate}
-                    \item \textbf{Data Collection:} Collect previous medical records and research data from various sources and databases
-                    \begin{enumerate}
-                        \item Ex: github.com/bruzwen/ddxplus
-                    \end{enumerate}
-                    \item \textbf{Data Processing:} Process the data to extract relevant features, such as removing stop works and blank lines, etc.
-                    \begin{enumerate}
-                        \item \textbf{Homomorphic Encryption} will protect sensitive health data instead of conforming to HIPAA and other health data protection regulations
-                    \end{enumerate}
-                    \item \textbf{Model Training:} Train machine learning models to predict disease risk and treatment outcomes
-                    \item \textbf{Model Deployment:} Deploy the models on a secure platform to be used by clinicians and patients
-                \end{enumerate}
-            \item \textbf{Libraries:}
+            \begin{enumerate}
+                \item Data Exploration
+                \item Preprocessing
+                \item Feature Engineering
+                \item Model Development
+                \item Training and Testing
+                \item Evaluation
+                \item Optimization
+                \item Documentation
+            \end{enumerate}
+            \item \textbf{Potential Libraries:}
             \begin{enumerate}
                 \item \textbf{Pandas:} For data manipulation and analysis
                 \item \textbf{Matplotlib:} For visualizations
@@ -83,36 +79,31 @@
                 \item \textbf{SQLAlchemy:} For SQL databases and Object-Relational Mapping
             \end{enumerate}
             \item \textbf{Manual Work:}
-                \begin{enumerate}
-                    \item Building the machine learning model
-                    \item Collection of datasets of diseases and percent chance of symptoms
-                    \begin{enumerate}
-                        \item Will contact local hospitals for datasets for the latest outcomes
-                    \end{enumerate}
-                    \item Homomorphic encryption implementation
-                    \item GUI development
-                    \begin{enumerate}
-                        \item Website or App
-                        \item Users can input their symptoms (and this will go into the dataset anonymously with homomorphic encryption)
-                        \item Users receive a percent chance of diagnosis based on these symptoms from the model we trained \\ \\
-                    \end{enumerate}
-                \end{enumerate}
+            \begin{enumerate}
+                \item Compiling datasets
+                \item Building custom model
+                \item Training and testing model
+                \item Creating website/app
+                \item Documentation of all steps
+            \end{enumerate}
         \end{enumerate}
     \item \textbf{Jobs:}
     \begin{enumerate}
-        \item 2 Machine Learning/Data Collections Specialist
+        \item \textbf{Machine Learning Developers}
         \begin{enumerate}
-            \item Make the Machine Learning/AI Model using Python and related libraries
-            \item Compile all data needed
+            \item Develops the machine learning model
+            \item Trains \& Tests the model
+            \item Makes the model usable in the website/app
         \end{enumerate}
-        \item Data Security Specialist
+        \item \textbf{Data Analyst}
         \begin{enumerate}
-            \item Focuses on the implementation of homomorphic encryption
+            \item Data-exploration, preprocessing, and feature engineering
+            \item Will still contribute as a Machine Learning Developer
         \end{enumerate}
-        \item GUI Developer
+        \item \textbf{GUI Developer}
         \begin{enumerate}
             \item Makes the website/app and all of its functionality (UI)
-            \item Would work with a Data Security Expert for the implementation of homomorphic encryption
+            \item Will still contribute as a Machine Learning Developer
         \end{enumerate}
     \end{enumerate}
 \end{enumerate}

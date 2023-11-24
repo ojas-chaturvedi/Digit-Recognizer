@@ -1,2 +1,1 @@
-\contentsline {section}{\numberline {}Idea 2: AI-Based Precision Medicine Platform}{1}{}%
-\contentsline {section}{\numberline {}Proposal}{2}{}%
+\contentsline {section}{\numberline {}bitches}{1}{}%
