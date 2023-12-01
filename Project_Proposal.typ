@@ -13,7 +13,7 @@
 #let chiline() = { v(-3pt); line(length: 100%); v(-5pt) }
 
 #set align(center)
-= Detecting AI-Generated Text --- Proposal
+= Handwriting Digit Recognizer --- Proposal
 Capstone: The Art of Approximation\
 Ojas Chaturvedi, Ritwik Jayaraman, Saianshul Vishnubhaktula, Zaheen Jamil
 
@@ -28,8 +28,8 @@ to its extensive libraries and frameworks
 == Objective
 #chiline()
 
-To develop a custom machine learning model which would be able to detect
-AI-generated text
+To develop a custom machine learning model which would be able to determine what
+a digit is from an image of a handwritten single digit
 
 == Implementation
 #chiline()
@@ -37,14 +37,14 @@ AI-generated text
 ==== Overview of Steps:
 #chiline()
 
-+ Data Exploration
++ Data Exploration and Visualization
 + Data Preprocessing
 + Feature Engineering
-+ Model Development
-+ Training and Testing
-+ Evaluation
-+ Optimization
-+ Documentation
++ Model Building
++ Model Training and Testing
++ Model Evaluation and Deployment
++ Hyperparameter Tuning and Optimization
++ Website/App Development
 
 ==== Potential Libraries:
 #chiline()
@@ -54,30 +54,30 @@ AI-generated text
 - Matplotlib: For data visualization
 - Scikit-learn: For data mining and analysis
 - TensorFlow: For deep learning and complex neural network modeling
-- PyTorch: For natural language processing
-- NLTK/spaCy: For human language data with symptom inputs
 - Flask/Django: For backend web development
 - SQLAlchemy: For SQL databases and Object-Relational Mapping
 
 ==== Manual Work:
 #chiline()
 
-- Compiling datasets
+- Making algorithms for data preprocessing and feature engineering
 - Building custom model
 - Training and testing model
-- Creating website/app
+- Creating website/app that can use the model and store results for future
+  training of model
 - Documentation of all steps
 
 == Jobs
 #chiline()
 
-- Machine Learning Developers
+- Machine/Deep Learning Developers
   - Develops the machine learning model
   - Trains & tests the model
   - Makes the model usable in the website/app
 - Data Analyst
-  - Data-exploration, preprocessing, and feature engineering
+  - Algorithm development for preprocessing and feature engineering
   - Will still contribute as a Machine Learning Developer
 - GUI Developer
   - Makes the website/app and all of its functionality (UI)
+  - Makes the model usable in the website/app
   - Will still contribute as a Machine Learning Developer
