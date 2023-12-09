@@ -1,0 +1,184 @@
+\documentclass{notes}
+
+\begin{document}
+
+
+\lecture{Digit Recognizer Project}{2023-2024}{Ojas Chaturvedi, Ritwik Jayaraman, Saianshul Vishnubhaktula, Zaheen Jamil}{}
+
+\vspace{-\baselineskip}
+\vspace{-\baselineskip}
+
+\section{Proposal}
+
+\subsection{Programming Language}
+Python, a simple and popular language for machine learning and data science due to its extensive libraries and frameworks
+
+\subsection{Objective}
+To develop a custom machine learning model which would be able to determine what a digit is from an image of a handwritten single digit
+
+\subsection{Implementation}
+
+\subsubsection{Overview of steps}
+\begin{enumerate}
+    \item Data Exploration and Visualization
+    \item Data Preprocessing
+    \item Feature Engineering
+    \item Model Building
+    \item Model Training and Testing
+    \item Model Evaluation and Deployment
+    \item Hyperparameter Tuning and Optimization
+    \item Website/App Development
+\end{enumerate}
+
+\subsubsection{Potential Libraries}
+\begin{enumerate}
+    \item \textbf{Pandas:} For data manipulation and analysis
+    \item \textbf{NumPy:} For numerical computing and working with arrays
+    \item \textbf{Matplotlib:} For data visualization
+    \item \textbf{Scikit-learn:} For data mining and analysis
+    \item \textbf{TensorFlow:} For deep learning and complex neural network modeling
+    \item \textbf{Flask/Django:} For backend web development
+    \item \textbf{SQLAlchemy:} For SQL databases and Object-Relational Mapping
+\end{enumerate}
+
+\subsubsection{Manual Work}
+\begin{enumerate}
+    \item Making algorithms for data preprocessing and feature engineering
+    \item Building custom model
+    \item Training and testing model
+    \item Creating website/app that can use the model and store results for future training of model
+    \item Documentation of all steps
+\end{enumerate}
+
+\subsection{Jobs}
+\begin{enumerate}
+    \item \textbf{Machine/Deep Learning Developers}
+    \begin{enumerate}
+        \item Develops the machine learning model
+        \item Trains \& tests the model
+        \item Makes the model usable in the website/app
+    \end{enumerate}
+    \item \textbf{Data Analyst}
+    \begin{enumerate}
+        \item Algorithm development for preprocessing and feature engineering
+        \item Will still contribute as a Machine Learning Developer
+    \end{enumerate}
+    \item \textbf{GUI Developer}
+    \begin{enumerate}
+        \item Makes the website/app and all of its functionality (UI)
+        \item Makes the model usable in the website/app
+        \item Will still contribute as a Machine Learning Developer
+    \end{enumerate}
+\end{enumerate}
+
+\section{Timeline}
+\vspace{-\baselineskip}
+Note: Multiple drafts of the model will be created, with each draft having increased accuracy.
+\vspace{-\baselineskip}
+\vspace{-\baselineskip}
+\begin{itemize}
+    \item Week 1:
+        \begin{itemize}
+            \item Start learning Bayesian Statistics
+            \begin{itemize}
+                \item Different types of Bayesian models in use
+                \item How different concepts (e.g. Gaussian) are used with Bayesian
+            \end{itemize}
+        \end{itemize}
+    \item Week 2:
+        \begin{itemize}
+            \item Continue Bayesian Statistics study
+            \begin{itemize}
+                \item Explore types of Bayesian models for MNIST (for now we are thinking of using a Naive Bayesian model)
+                \item \underline{\textbf{Deadline:}} Be finished learning what we need for Bayesian by Friday, December 22
+            \end{itemize}
+        \end{itemize}
+    \item Week 3:
+        \begin{itemize}
+            \item Implement initial machine learning models (make a first draft of the Bayesian model; this includes optimization techniques such as 5-fold cross-validation)
+            \begin{itemize}
+                \item \underline{\textbf{Deadline:}} Be finished with draft 1 by Friday, December 29
+            \end{itemize}
+            \item Begin exploratory data analysis on the MNIST dataset. Use Python to clean the dataset and prepare it for use to test ML model version 1
+            \begin{itemize}
+                \item \underline{\textbf{Deadline:}} Test model draft 1 by Friday, December 29
+            \end{itemize}
+        \end{itemize}
+    \item Week 4:
+        \begin{itemize}
+            \item Implement initial machine learning models (make a second draft of the Bayesian model)
+            \begin{itemize}
+                \item \underline{\textbf{Deadline:}} Be finished with draft 2 by Wednesday, January 3
+                \item \underline{\textbf{Deadline:}} Test model draft 2 by Friday, January 5
+            \end{itemize}
+            \item Start developing the GUI that implements the model (initial framework)
+            \begin{itemize}
+                \item \underline{\textbf{Deadline:}} Decide GUI type (website or app) by Friday, January 5
+            \end{itemize}
+        \end{itemize}
+    \item Week 5:
+        \begin{itemize}
+            \item Implement initial machine learning models (make a third/nearly final draft of the Bayesian model)
+            \begin{itemize}
+                \item \underline{\textbf{Deadline:}} Be finished with draft 3 by Wednesday, January 10
+                \item \underline{\textbf{Deadline:}} Test model draft 3 by Friday, January 12
+            \end{itemize}
+            \item Develop the image uploading/camera functionality
+            \begin{itemize}
+                \item \underline{\textbf{Deadline:}} Friday, January 12
+            \end{itemize}
+        \end{itemize}
+    \item Week 6:
+        \begin{itemize}
+            \item Refine the model based on testing of user-inputted data
+            \begin{itemize}
+                \item Link GUI to model and use Python to clean image data (scaling resolution, grayscale) before inputting it into the test set
+                \begin{itemize}
+                    \item \underline{\textbf{Deadline:}} Friday, January 19
+                \end{itemize}
+            \end{itemize}
+            \item Continue testing and model adjustments
+            \item Start class presentation
+            \begin{itemize}
+                \item \underline{\textbf{Deadline:}} Have the introduction + most of the methods slides finished by Friday, January 19
+            \end{itemize}
+        \end{itemize}
+    \item Week 7:
+        \begin{itemize}
+            \item Complete the development of the GUI
+            \begin{itemize}
+                \item \underline{\textbf{Deadline:}} Friday, January 26
+            \end{itemize}
+            \item Finalize the model after thorough testing and validation + complete final testing
+            \begin{itemize}
+                \item \underline{\textbf{Deadline:}} Be finished with all by Friday, January 26
+            \end{itemize}
+            \item Continue class presentation (specifically the methods + deliverable showcase slides)
+            \begin{itemize}
+                \item \underline{\textbf{Deadline:}} Finalized presentation by Friday, January 26
+            \end{itemize}
+        \end{itemize}
+    \item Week 8:
+        \begin{itemize}
+            \item Prepare and fine-tune presentation and documentation for the project submission
+            \begin{itemize}
+                \item \underline{\textbf{Deadline:}} Be finished by Tuesday, January 30
+            \end{itemize}
+        \end{itemize}
+\end{itemize}
+
+\section{Libraries}
+To learn the essential Python libraries that were mentioned in the proposal (Pandas, NumPy, Matplotlib, Scikit-learn, TensorFlow, Flask/Django, SQLAlchemy), the best tool would be the official documentation for that library. We can also find YouTube tutorials about specific aspects of these libraries that are relevant to our project since we won't need to understand the entire library for our project.
+
+\section{Deliverables}
+Machine Learning Model: Trained model capable of recognizing and interpreting handwritten digits, using the MNIST dataset for training and validation. The model will incorporate Bayesian statistics for better accuracy (and, if possible, a well-defined cost function to enhance performance). The focus will be on creating a robust, efficient model that can accurately classify new, unseen handwritten digit images. \\
+Graphical User Interface - Website or Application: This GUI will serve as the interactive front-end for the machine learning model. Some key features will be:
+\begin{itemize}
+    \item Image Upload Capability: If designed as a web application, users can upload images of handwritten digits. If it's a standalone application, the application will be able to access the users' cameras to take a picture. These images could be stored using Firebase.
+    \item Digit Recognition: Upon uploading an image, the model will analyze and display the predicted digit.
+    \item User-Friendly Interface: The GUI will be designed to be intuitive and easy to navigate, ensuring accessibility for users with varying levels of technical expertise.
+    \item Feedback Mechanism: An option for users to provide feedback on the model's predictions, which can be valuable for further model improvement.
+    \item Cross-Platform Compatibility: If designed as a web application, it will be accessible across various devices and browsers. It could be hosted on GitHub for free to run 24/7. If it's a standalone application, it may be designed for different operating systems using a framework like Flutter or made in React for Android.
+\end{itemize}
+
+\end{document}
