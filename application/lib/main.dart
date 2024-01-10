@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 
-void main() {
+// Import the firebase_core plugin and configuration file
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
+void main() async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
