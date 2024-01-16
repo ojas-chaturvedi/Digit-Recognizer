@@ -1,5 +1,6 @@
 import numpy as np
 from keras.datasets import mnist
+import os, cv2, numpy as np, tensorflow as tf, matplotlib.pyplot as plt
 
 class NaiveBayes:
     def __init__(self):
@@ -15,16 +16,20 @@ class NaiveBayes:
             self.priors.append(np.mean(y == i))
             x_n = x[y == i]
             self.means.append(np.mean(x_n, axis = 0))
-            self.variances.append(np.var(x_n, axis = 0) + 0.01)
+            self.variances.append(np.var(x_n, axis = 0) + 0.01559)
 
     def predict(self, x):
+        self.posteriors = []
         for i in self.classes:
             log_prior = np.log(self.priors[i])
             likelihood = np.sum(np.log(self.gaussian(x, self.means[i], self.variances[i])), axis = 1)
             posterior = likelihood + log_prior
             self.posteriors.append(posterior)
-
-        return np.argmax(self.posteriors, axis = 0)
+        self.posteriors = np.array(self.posteriors)
+        if self.posteriors.ndim == 2:
+            return np.argmax(self.posteriors, axis=0)
+        else:
+            return np.argmax(self.posteriors)
 
     def gaussian(self, x, mean, variance):
         numerator = np.exp(-((x - mean) ** 2) / (2 * variance))
