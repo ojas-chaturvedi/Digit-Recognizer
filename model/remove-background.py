@@ -1,6 +1,6 @@
 from rembg import remove
 from PIL import Image
 
-input_image = Image.open('random.png')
+input_image = Image.open('testing.png')
 output = remove(input_image)
-output.save('random_output.PNG')
+output.save('testing_output.png')

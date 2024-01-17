@@ -1,6 +1,9 @@
 import numpy as np
+import tensorflow as tf
 from keras.datasets import mnist
-import os, cv2, numpy as np, tensorflow as tf, matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
+import cv2
+import os
 
 class NaiveBayes:
     def __init__(self):
@@ -35,7 +38,11 @@ class NaiveBayes:
         numerator = np.exp(-((x - mean) ** 2) / (2 * variance))
         denominator = np.sqrt(2 * np.pi * variance)
         return numerator / denominator
-        
+
+class ProcessImage:
+    def __init__(self):
+        self.path = 'random.PNG'
+
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 x_train = x_train.reshape(x_train.shape[0], -1) / 255.0
 x_test = x_test.reshape(x_test.shape[0], -1) / 255.0
