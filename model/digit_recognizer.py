@@ -66,7 +66,7 @@ class ProcessImage:
         img = shifted
 
         # DEBUG
-        cv2.imwrite("output.png", img)
+        # cv2.imwrite("output.png", img)
 
         # Normalize the image
         img = img / 255.0
