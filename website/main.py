@@ -81,9 +81,30 @@ file = st.file_uploader("""
 
 import cv2
 from PIL import Image, ImageOps
+import numpy as np
 
-if file is None:
-    pass
-else:
-    image = Image.open(file)
-    st.image(image, use_column_width=True)
+if file is not None:
+    # Read the file as a byte stream
+    file_bytes = np.asarray(bytearray(file.read()), dtype=np.uint8)
+
+    # Check if the byte stream is empty
+    if file_bytes.size == 0:
+        st.error("The uploaded file is empty. Please upload a valid image file.")
+    else:
+        # Use OpenCV to read the image data
+        img = cv2.imdecode(file_bytes, cv2.IMREAD_GRAYSCALE)
+
+        if img is None:
+            st.error("Could not decode the image. Please upload a valid image file.")
+        else:
+            # Scale to 20x20, invert (like training)
+            img = cv2.resize(255 - img, (20, 20), interpolation = cv2.INTER_AREA)
+
+            # Make gray into black (uniform background like training)
+            _, img = cv2.threshold(img, 128, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+
+            # Make gray into black (uniform background like training)
+            _, img = cv2.threshold(img, 128, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+
+            # Display the processed image
+            st.image(img, use_column_width=True)
