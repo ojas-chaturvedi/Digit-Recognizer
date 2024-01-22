@@ -1,9 +1,9 @@
 import numpy as np
-import tensorflow as tf
+# import tensorflow as tf
 from keras.datasets import mnist
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import cv2
-import os
+# import os
 import math
 from scipy import ndimage
 
