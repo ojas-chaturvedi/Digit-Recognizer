@@ -1,0 +1,12 @@
+# Overall
+.vscode/
+.DS_Store
+.obsidian/
+
+# LaTeX-specific
+*.aux
+*.out
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex.gz
