@@ -83,7 +83,7 @@ import cv2
 from PIL import Image, ImageOps
 
 if file is None:
-    st.text("Waiting for image upload...")
+    pass
 else:
     image = Image.open(file)
     st.image(image, use_column_width=True)
