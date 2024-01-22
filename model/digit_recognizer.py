@@ -132,22 +132,44 @@ model.fit(x_train, y_train)
 # accuracy = np.mean(y_predicted == y_test)
 # print("Accuracy: ", accuracy)
 
-digits_imgs = []
-for file in os.scandir("digits"):
-    img_processor = ProcessImage(file.path)
-    img = img_processor.preprocess()
-    digits_imgs.append(img)
+def r_digits():
+    digits_imgs = []
+    suffixes = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "11", "22", "44", "88", "99", "111"]
+    for num in suffixes:
+        img_processor = ProcessImage('r_digits/r_image_' + (num) + '.png')
+        img = img_processor.preprocess()
+        digits_imgs.append(img)
 
-predicted_digits = model.predict(digits_imgs)
-print("Predicted Digit: ", predicted_digits)
+    predicted_digits = model.predict(digits_imgs)
+    print("Predicted Digit: ", predicted_digits)
 
-actual_digits = [7, 7, 0, 5, 3, 2, 1, 0, 8, 7, 4, 2, 9, 8, 5, 1, 1, 1, 7]
-print("Actual Digits: ", actual_digits)
+    actual_digits = [1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 4, 8, 9, 1]
+    print("Actual Digits: ", actual_digits)
 
-accuracy = np.mean(predicted_digits == actual_digits)
-print("Accuracy: ", accuracy)
+    accuracy = np.mean(predicted_digits == actual_digits)
+    print("Accuracy: ", accuracy)
+
+def digits():
+    digits_imgs = []
+    suffixes = ["1", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "2", "3", "4", "5", "6", "7", "8", "9"]
+    for num in suffixes:
+        img_processor = ProcessImage('digits/digit' + (num) + '.png')
+        img = img_processor.preprocess()
+        digits_imgs.append(img)
+
+    predicted_digits = model.predict(digits_imgs)
+    print("Predicted Digit: ", predicted_digits)
+
+    actual_digits = [7, 7, 0, 5, 3, 2, 1, 0, 8, 7, 4, 2, 9, 8, 5, 1, 1, 1, 7]
+    print("Actual Digits: ", actual_digits)
+
+    accuracy = np.mean(predicted_digits == actual_digits)
+    print("Accuracy: ", accuracy)
 
 # img_processor = ProcessImage("testing.png")
 # img = img_processor.preprocess()
 # predicted_digit = model.predict([img])
 # print("Predicted Digit: ", predicted_digit)
+
+r_digits()
+digits()
