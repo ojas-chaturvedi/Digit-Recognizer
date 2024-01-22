@@ -11,7 +11,6 @@ class NaiveBayes:
         self.means = []
         self.variances = []
         self.priors = []
-        self.posteriors = []
 
     def fit(self, x, y):
         self.classes = np.unique(y)
@@ -20,15 +19,17 @@ class NaiveBayes:
             self.priors.append(np.mean(y == i))
             x_n = x[y == i]
             self.means.append(np.mean(x_n, axis = 0))
-            self.variances.append(np.var(x_n, axis = 0) + 0.01559)
+            self.variances.append(np.var(x_n, axis = 0) + 0.01575)
 
     def predict(self, x):
         self.posteriors = []
+
         for i in self.classes:
             log_prior = np.log(self.priors[i])
             likelihood = np.sum(np.log(self.gaussian(x, self.means[i], self.variances[i])), axis = 1)
             posterior = likelihood + log_prior
             self.posteriors.append(posterior)
+            
         self.posteriors = np.array(self.posteriors)
         if self.posteriors.ndim == 2:
             return np.argmax(self.posteriors, axis=0)
@@ -52,12 +53,12 @@ y_predicted = model.predict(x_test)
 accuracy = np.mean(y_predicted == y_test)
 
 class ProcessImage:
-    def __init__(self, image):
-        self.image = image
+    def __init__(self, image_path):
+        self.path = image_path
 
     def preprocess(self):
         # Read the image
-        img = self.image
+        img = cv2.imread(self.path, cv2.IMREAD_GRAYSCALE)
 
         # Scale to 20x20, invert (like training)
         img = cv2.resize(255 - img, (20, 20), interpolation = cv2.INTER_AREA)
@@ -65,14 +66,14 @@ class ProcessImage:
         # img = cv2.GaussianBlur(img,(5,5),0)
 
         # Make gray into black (uniform background like training)
-        _, img = cv2.threshold(img, 128, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        _, img = cv2.threshold(img, 100, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
         # Remove completely black (empty) rows/cols on all sides
         img = self.trim(img)
 
         # Center digit
         shiftx, shifty = self.getBestShift(img)
-        shifted = self.shift(img,shiftx,shifty)
+        shifted = self.shift(img, shiftx, shifty)
         img = shifted
 
         # DEBUG
@@ -83,22 +84,23 @@ class ProcessImage:
 
         # Reshape to 1D match the input of the model
         img = img.reshape(-1)
+
         return img
 
     def trim(self, img):
         while np.sum(img[0]) == 0:
             img = img[1:]
 
-        while np.sum(img[:,0]) == 0:
-            img = np.delete(img,0,1)
+        while np.sum(img[:, 0]) == 0:
+            img = np.delete(img, 0, 1)
 
         while np.sum(img[-1]) == 0:
             img = img[:-1]
 
-        while np.sum(img[:,-1]) == 0:
-            img = np.delete(img,-1,1)
+        while np.sum(img[:, -1]) == 0:
+            img = np.delete(img, -1, 1)
 
-        rows,cols = img.shape
+        rows, cols = img.shape
 
         if rows > cols:
             factor = 20.0 / rows
@@ -111,25 +113,25 @@ class ProcessImage:
             rows = int(round(rows * factor))
             img = cv2.resize(img, (cols, rows))
 
-        colsPadding = (int(math.ceil((28 - cols)/ 2.0)), int(math.floor((28 - cols)/ 2.0)))
-        rowsPadding = (int(math.ceil((28 - rows)/ 2.0)), int(math.floor((28 - rows)/ 2.0)))
+        colsPadding = (int(math.ceil((28 - cols) / 2.0)), int(math.floor((28 - cols) / 2.0)))
+        rowsPadding = (int(math.ceil((28 - rows)/ 2.0)), int(math.floor((28 - rows) / 2.0)))
         img = np.pad(img, (rowsPadding, colsPadding), 'constant')
 
         return img
 
     def getBestShift(self, img):
         cy, cx = ndimage.center_of_mass(img)
+        rows, cols = img.shape
+        shiftx = np.round(cols / 2.0 - cx).astype(int)
+        shifty = np.round(rows / 2.0 - cy).astype(int)
 
+        return shiftx, shifty
+
+    def shift(self, img, sx, sy):
         rows,cols = img.shape
-        shiftx = np.round(cols/2.0-cx).astype(int)
-        shifty = np.round(rows/2.0-cy).astype(int)
+        M = np.float32([[1, 0, sx], [0, 1, sy]])
+        shifted = cv2.warpAffine(img, M, (cols, rows))
 
-        return shiftx,shifty
-
-    def shift(self, img,sx,sy):
-        rows,cols = img.shape
-        M = np.float32([[1,0,sx],[0,1,sy]])
-        shifted = cv2.warpAffine(img,M,(cols,rows))
         return shifted
 
 html(
