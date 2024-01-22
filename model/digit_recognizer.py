@@ -55,14 +55,10 @@ class ProcessImage:
         # img = cv2.GaussianBlur(img,(5,5),0)
 
         # Make gray into black (uniform background like training)
-        _, img = cv2.threshold(img, 100, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        _, img = cv2.threshold(img, 128, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
         # Remove completely black (empty) rows/cols on all sides
         img = self.trim(img)
-
-        colsPadding = (int(math.ceil((28 - cols)/ 2.0)), int(math.floor((28 - cols)/ 2.0)))
-        rowsPadding = (int(math.ceil((28 - rows)/ 2.0)), int(math.floor((28 - rows)/ 2.0)))
-        img = np.pad(img, (rowsPadding, colsPadding), 'constant')
 
         # Center digit
         shiftx, shifty = self.getBestShift(img)
@@ -105,6 +101,9 @@ class ProcessImage:
             rows = int(round(rows * factor))
             img = cv2.resize(img, (cols, rows))
 
+        colsPadding = (int(math.ceil((28 - cols)/ 2.0)), int(math.floor((28 - cols)/ 2.0)))
+        rowsPadding = (int(math.ceil((28 - rows)/ 2.0)), int(math.floor((28 - rows)/ 2.0)))
+        img = np.pad(img, (rowsPadding, colsPadding), 'constant')
 
         return img
 
@@ -126,7 +125,7 @@ class ProcessImage:
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 x_train = x_train.reshape(x_train.shape[0], -1) / 255.0
 # x_test = x_test.reshape(x_test.shape[0], -1) / 255.0
-#
+
 model = NaiveBayes()
 model.fit(x_train, y_train)
 # y_predicted = model.predict(x_test)
