@@ -46,10 +46,7 @@ html(
     height=20000,
     width=20000,
 )
-
-
 # Add css to make the iframe fullscreen
-
 st.markdown(
     """
 <style>
@@ -82,3 +79,11 @@ file = st.file_uploader("""
     Please upload an image file.
     """, type=["jpg", "png"])
 
+import cv2
+from PIL import Image, ImageOps
+
+if file is None:
+    st.text("Waiting for image upload...")
+else:
+    image = Image.open(file)
+    st.image(image, use_column_width=True)
