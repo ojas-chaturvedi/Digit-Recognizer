@@ -1,86 +1,6 @@
 import streamlit as st
-
 from streamlit.components.v1 import html
-
-html(
-    """
-<html>
-<head>
-   <script src = "https://cdnjs.cloudflare.com/ajax/libs/tsparticles/1.18.11/tsparticles.min.js"> </script>
-   <style>
-      #particles {
-         position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          width: 100%;
-          height: 100%;
-          z-index: -1;
-          overflow: hidden;
-         background-color: teal;
-      }
-   </style>
-</head>
-<body>
-   <div id = "particles">
-   </div>
-   <script>
-      tsParticles.load("particles", {
-         particles: {
-            number: {
-               value: 1000
-            },
-            move: {
-               enable: true
-            },
-            color: {
-               value: "#272701"
-            },
-         }
-      });
-   </script>
-</body>
-</html>
-""",
-    height=20000,
-    width=20000,
-)
-# Add css to make the iframe fullscreen
-st.markdown(
-    """
-<style>
-    iframe {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        border: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-    }
-
-</style>
-""",
-    unsafe_allow_html=True,
-)
-
-st.write("""
-    # Handwritten Digit Recognizer
-    """)
-st.write("This is a simple image classification web app to predict a numerical handwritten digit.")
-st.write("""
-    Note: Digits within images must be clearly visible, in focus, and centered.
-    There must be no other objects in the image (shadows, lines, etc.).
-    """)
-file = st.file_uploader("""
-    Please upload an image file.
-    """, type=["jpg", "png"])
-
 import cv2
-from PIL import Image, ImageOps
 import numpy as np
 import math
 from scipy import ndimage
@@ -120,6 +40,16 @@ class NaiveBayes:
         denominator = np.sqrt(2 * np.pi * variance)
         return numerator / denominator
 
+# Get the training and testing data from the mnist library
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
+x_train = x_train.reshape(x_train.shape[0], -1) / 255.0
+x_test = x_test.reshape(x_test.shape[0], -1) / 255.0
+
+# Create the model, fit it, then test it
+model = NaiveBayes()
+model.fit(x_train, y_train)
+y_predicted = model.predict(x_test)
+accuracy = np.mean(y_predicted == y_test)
 
 class ProcessImage:
     def __init__(self, image):
@@ -202,18 +132,86 @@ class ProcessImage:
         shifted = cv2.warpAffine(img,M,(cols,rows))
         return shifted
 
+html(
+    """
+<html>
+<head>
+   <script src = "https://cdnjs.cloudflare.com/ajax/libs/tsparticles/1.18.11/tsparticles.min.js"> </script>
+   <style>
+      #particles {
+         position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          width: 100%;
+          height: 100%;
+          z-index: -1;
+          overflow: hidden;
+         background-color: teal;
+      }
+   </style>
+</head>
+<body>
+   <div id = "particles">
+   </div>
+   <script>
+      tsParticles.load("particles", {
+         particles: {
+            number: {
+               value: 1000
+            },
+            move: {
+               enable: true
+            },
+            color: {
+               value: "#272701"
+            },
+         }
+      });
+   </script>
+</body>
+</html>
+""",
+    height=20000,
+    width=20000,
+)
+# Add css to make the iframe fullscreen
+st.markdown(
+    """
+<style>
+    iframe {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+
+</style>
+""",
+    unsafe_allow_html=True,
+)
+
+st.write("""
+    # Handwritten Digit Recognizer
+    """)
+st.write("This is a simple image classification web app to predict a numerical handwritten digit.")
+st.write("Accuracy of model with mnist dataset: ", accuracy)
+st.write("""
+    Note: Digits within images must be clearly visible, in focus, and centered.
+    There must be no other objects in the image (shadows, lines, etc.).
+    """)
+file = st.file_uploader("""
+    Please upload an image file.
+    """, type=["jpg", "png"])
+
 if file is not None:
-    (x_train, y_train), (x_test, y_test) = mnist.load_data()
-    x_train = x_train.reshape(x_train.shape[0], -1) / 255.0
-    x_test = x_test.reshape(x_test.shape[0], -1) / 255.0
-
-    model = NaiveBayes()
-    model.fit(x_train, y_train)
-    y_predicted = model.predict(x_test)
-    accuracy = np.mean(y_predicted == y_test)
-    st.write("Accuracy: ", accuracy)
-
-    # Read the file as a byte stream
+    # Read the uploaded file as a byte stream
     file_bytes = np.asarray(bytearray(file.read()), dtype=np.uint8)
 
     # Check if the byte stream is empty
@@ -233,5 +231,6 @@ if file is not None:
             image_processor = ProcessImage(img)
             final_image = image_processor.preprocess()
 
+            # Predict procesed image
             predicted_digit = model.predict([final_image])
             st.write("Predicted Digit: ", predicted_digit)
