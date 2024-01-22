@@ -124,13 +124,13 @@ class ProcessImage:
 
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 x_train = x_train.reshape(x_train.shape[0], -1) / 255.0
-# x_test = x_test.reshape(x_test.shape[0], -1) / 255.0
+x_test = x_test.reshape(x_test.shape[0], -1) / 255.0
 
 model = NaiveBayes()
 model.fit(x_train, y_train)
-# y_predicted = model.predict(x_test)
-# accuracy = np.mean(y_predicted == y_test)
-# print("Accuracy: ", accuracy)
+y_predicted = model.predict(x_test)
+accuracy = np.mean(y_predicted == y_test)
+print("Accuracy: ", accuracy)
 
 def r_digits():
     digits_imgs = []
@@ -165,11 +165,6 @@ def digits():
 
     accuracy = np.mean(predicted_digits == actual_digits)
     print("Accuracy: ", accuracy)
-
-# img_processor = ProcessImage("testing.png")
-# img = img_processor.preprocess()
-# predicted_digit = model.predict([img])
-# print("Predicted Digit: ", predicted_digit)
 
 r_digits()
 digits()
