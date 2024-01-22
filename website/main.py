@@ -136,67 +136,67 @@ class ProcessImage:
 
 html(
     """
-<html>
-<head>
-    <script src = "https://cdnjs.cloudflare.com/ajax/libs/tsparticles/1.18.11/tsparticles.min.js"> </script>
-    <style>
-        #particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-            background-color: teal;
-        }
-    </style>
-</head>
-<body>
-    <div id = "particles">
-    </div>
-    <script>
-        tsParticles.load("particles", {
-            particles: {
-                number: {
-                    value: 1000
-                },
-                move: {
-                    enable: true
-                },
-                color: {
-                    value: "#272701"
-                },
-            }
-        });
-    </script>
-</body>
-</html>
-""",
-    height=20000,
-    width=20000,
+    <html>
+        <head>
+            <script src = "https://cdnjs.cloudflare.com/ajax/libs/tsparticles/1.18.11/tsparticles.min.js"></script>
+            <style>
+                #particles {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    width: 100%;
+                    height: 100%;
+                    z-index: -1;
+                    overflow: hidden;
+                    background-color: teal;
+                }
+            </style>
+        </head>
+        <body>
+            <div id = "particles">
+            </div>
+            <script>
+                tsParticles.load("particles", {
+                    particles: {
+                        number: {
+                            value: 1000
+                        },
+                        move: {
+                            enable: true
+                        },
+                        color: {
+                            value: "#272701"
+                        },
+                    }
+                });
+            </script>
+        </body>
+    </html>
+    """,
+    height = 20000,
+    width = 20000
 )
 # Add css to make the iframe fullscreen
 st.markdown(
     """
-<style>
-    iframe {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        border: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-    }
+    <style>
+        iframe {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
 
-</style>
-""",
-    unsafe_allow_html=True,
+    </style>
+    """,
+    unsafe_allow_html = True
 )
 
 st.write("""
@@ -210,11 +210,11 @@ st.write("""
     """)
 file = st.file_uploader("""
     Please upload an image file.
-    """, type=["jpg", "png"])
+    """, type = ["jpg", "png"])
 
 if file is not None:
     # Read the uploaded file as a byte stream
-    file_bytes = np.asarray(bytearray(file.read()), dtype=np.uint8)
+    file_bytes = np.asarray(bytearray(file.read()), dtype = np.uint8)
 
     # Check if the byte stream is empty
     if file_bytes.size == 0:
@@ -227,7 +227,7 @@ if file is not None:
             st.error("Could not decode the image. Please upload a valid image file.")
         else:
             # Display the processed image
-            st.image(img, use_column_width=True)
+            st.image(img, use_column_width = True)
 
             # Process image
             image_processor = ProcessImage(img)
