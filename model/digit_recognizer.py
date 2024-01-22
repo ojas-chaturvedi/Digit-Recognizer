@@ -64,6 +64,7 @@ class ProcessImage:
         rowsPadding = (int(math.ceil((28 - rows)/ 2.0)), int(math.floor((28 - rows)/ 2.0)))
         img = np.pad(img, (rowsPadding, colsPadding), 'constant')
 
+        # Center digit
         shiftx, shifty = self.getBestShift(img)
         shifted = self.shift(img,shiftx,shifty)
         img = shifted
