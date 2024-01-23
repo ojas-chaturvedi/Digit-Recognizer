@@ -1,4 +1,6 @@
+streamlit
 numpy
 keras
 tensorflow
 opencv
+scipy
