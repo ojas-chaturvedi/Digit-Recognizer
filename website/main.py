@@ -53,12 +53,12 @@ y_predicted = model.predict(x_test)
 accuracy = np.mean(y_predicted == y_test)
 
 class ProcessImage:
-    def __init__(self, image_path):
-        self.path = image_path
+    def __init__(self, image):
+        self.image = image
 
     def preprocess(self):
         # Read the image
-        img = cv2.imread(self.path, cv2.IMREAD_GRAYSCALE)
+        img = self.image
 
         # Scale to 20x20, invert (like training)
         img = cv2.resize(255 - img, (20, 20), interpolation = cv2.INTER_AREA)
@@ -66,7 +66,7 @@ class ProcessImage:
         # img = cv2.GaussianBlur(img,(5,5),0)
 
         # Make gray into black (uniform background like training)
-        _, img = cv2.threshold(img, 100, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        _, img = cv2.threshold(img, 128, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
         # Remove completely black (empty) rows/cols on all sides
         img = self.trim(img)
@@ -113,8 +113,14 @@ class ProcessImage:
             rows = int(round(rows * factor))
             img = cv2.resize(img, (cols, rows))
 
-        colsPadding = (int(math.ceil((28 - cols) / 2.0)), int(math.floor((28 - cols) / 2.0)))
-        rowsPadding = (int(math.ceil((28 - rows)/ 2.0)), int(math.floor((28 - rows) / 2.0)))
+        colsPadding = (
+            int(math.ceil((28 - cols) / 2.0)),
+            int(math.floor((28 - cols) / 2.0)),
+        )
+        rowsPadding = (
+            int(math.ceil((28 - rows) / 2.0)),
+            int(math.floor((28 - rows) / 2.0)),
+        )
         img = np.pad(img, (rowsPadding, colsPadding), 'constant')
 
         return img
@@ -128,7 +134,7 @@ class ProcessImage:
         return shiftx, shifty
 
     def shift(self, img, sx, sy):
-        rows,cols = img.shape
+        rows, cols = img.shape
         M = np.float32([[1, 0, sx], [0, 1, sy]])
         shifted = cv2.warpAffine(img, M, (cols, rows))
 
@@ -176,7 +182,7 @@ html(
     </html>
     """,
     height = 20000,
-    width = 20000
+    width = 20000,
 )
 # Add css to make the iframe fullscreen
 st.markdown(
@@ -193,24 +199,34 @@ st.markdown(
             padding: 0;
             overflow: hidden;
         }
-
     </style>
     """,
-    unsafe_allow_html = True
+    unsafe_allow_html = True,
 )
 
-st.write("""
+st.write(
+    """
     # Handwritten Digit Recognizer
-    """)
-st.write("This is a simple image classification web app to predict a numerical handwritten digit.")
-st.write("Accuracy of model with mnist dataset: ", accuracy)
-st.write("""
+    """
+)
+st.write(
+    "This is a simple image classification web app to predict a numerical handwritten digit."
+)
+st.write(
+    "Accuracy of model with mnist dataset: ", (accuracy * 100), "%"
+)
+st.write(
+    """
     Note: Digits within images must be clearly visible, in focus, and centered.
     There must be no other objects in the image (shadows, lines, etc.).
-    """)
-file = st.file_uploader("""
+    """
+)
+file = st.file_uploader(
+    """
     Please upload an image file.
-    """, type = ["jpg", "png"])
+    """,
+    type = ["jpg", "png"],
+)
 
 if file is not None:
     # Read the uploaded file as a byte stream
@@ -235,4 +251,4 @@ if file is not None:
 
             # Predict procesed image
             predicted_digit = model.predict([final_image])
-            st.write("Predicted Digit: ", predicted_digit)
+            st.write("Predicted Digit: ", predicted_digit[0])
