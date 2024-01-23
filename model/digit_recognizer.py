@@ -19,15 +19,17 @@ class NaiveBayes:
         for i in self.classes:
             self.priors.append(np.mean(y == i))
             x_n = x[y == i]
-            self.means.append(np.mean(x_n, axis = 0))
-            self.variances.append(np.var(x_n, axis = 0) + 0.01559)
+            self.means.append(np.mean(x_n, axis=0))
+            self.variances.append(np.var(x_n, axis=0) + 0.01559)
 
     def predict(self, x):
         posteriors = []
 
         for i in self.classes:
             log_prior = np.log(self.priors[i])
-            likelihood = np.sum(np.log(self.gaussian(x, self.means[i], self.variances[i])), axis = 1)
+            likelihood = np.sum(
+                np.log(self.gaussian(x, self.means[i], self.variances[i])), axis=1
+            )
             posterior = np.exp(likelihood) * np.exp(log_prior)
             posteriors.append(posterior)
 
@@ -48,6 +50,7 @@ class NaiveBayes:
         denominator = np.sqrt(2 * np.pi * variance)
         return numerator / denominator
 
+
 class ProcessImage:
     def __init__(self, image_path):
         self.path = image_path
@@ -57,7 +60,7 @@ class ProcessImage:
         img = cv2.imread(self.path, cv2.IMREAD_GRAYSCALE)
 
         # Scale to 20x20, invert (like training)
-        img = cv2.resize(255 - img, (20, 20), interpolation = cv2.INTER_AREA)
+        img = cv2.resize(255 - img, (20, 20), interpolation=cv2.INTER_AREA)
 
         # img = cv2.GaussianBlur(img,(5,5),0)
 
@@ -69,7 +72,7 @@ class ProcessImage:
 
         # Center digit
         shiftx, shifty = self.getBestShift(img)
-        shifted = self.shift(img,shiftx,shifty)
+        shifted = self.shift(img, shiftx, shifty)
         img = shifted
 
         # DEBUG
@@ -86,16 +89,16 @@ class ProcessImage:
         while np.sum(img[0]) == 0:
             img = img[1:]
 
-        while np.sum(img[:,0]) == 0:
-            img = np.delete(img,0,1)
+        while np.sum(img[:, 0]) == 0:
+            img = np.delete(img, 0, 1)
 
         while np.sum(img[-1]) == 0:
             img = img[:-1]
 
-        while np.sum(img[:,-1]) == 0:
-            img = np.delete(img,-1,1)
+        while np.sum(img[:, -1]) == 0:
+            img = np.delete(img, -1, 1)
 
-        rows,cols = img.shape
+        rows, cols = img.shape
 
         if rows > cols:
             factor = 20.0 / rows
@@ -108,26 +111,33 @@ class ProcessImage:
             rows = int(round(rows * factor))
             img = cv2.resize(img, (cols, rows))
 
-        colsPadding = (int(math.ceil((28 - cols)/ 2.0)), int(math.floor((28 - cols)/ 2.0)))
-        rowsPadding = (int(math.ceil((28 - rows)/ 2.0)), int(math.floor((28 - rows)/ 2.0)))
-        img = np.pad(img, (rowsPadding, colsPadding), 'constant')
+        colsPadding = (
+            int(math.ceil((28 - cols) / 2.0)),
+            int(math.floor((28 - cols) / 2.0)),
+        )
+        rowsPadding = (
+            int(math.ceil((28 - rows) / 2.0)),
+            int(math.floor((28 - rows) / 2.0)),
+        )
+        img = np.pad(img, (rowsPadding, colsPadding), "constant")
 
         return img
 
     def getBestShift(self, img):
         cy, cx = ndimage.center_of_mass(img)
 
-        rows,cols = img.shape
-        shiftx = np.round(cols/2.0-cx).astype(int)
-        shifty = np.round(rows/2.0-cy).astype(int)
+        rows, cols = img.shape
+        shiftx = np.round(cols / 2.0 - cx).astype(int)
+        shifty = np.round(rows / 2.0 - cy).astype(int)
 
-        return shiftx,shifty
+        return shiftx, shifty
 
-    def shift(self, img,sx,sy):
-        rows,cols = img.shape
-        M = np.float32([[1,0,sx],[0,1,sy]])
-        shifted = cv2.warpAffine(img,M,(cols,rows))
+    def shift(self, img, sx, sy):
+        rows, cols = img.shape
+        M = np.float32([[1, 0, sx], [0, 1, sy]])
+        shifted = cv2.warpAffine(img, M, (cols, rows))
         return shifted
+
 
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 x_train = x_train.reshape(x_train.shape[0], -1) / 255.0
@@ -135,19 +145,36 @@ x_test = x_test.reshape(x_test.shape[0], -1) / 255.0
 
 model = NaiveBayes()
 model.fit(x_train, y_train)
-y_predicted = np.argmax(model.predict(x_test), axis = 1)
+y_predicted = np.argmax(model.predict(x_test), axis=1)
 accuracy = np.mean(y_predicted == y_test)
 print("Accuracy: ", accuracy)
 
+
 def r_digits():
     digits_imgs = []
-    suffixes = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "11", "22", "44", "88", "99", "111"]
+    suffixes = [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "11",
+        "22",
+        "44",
+        "88",
+        "99",
+        "111",
+    ]
     for num in suffixes:
-        img_processor = ProcessImage('r_digits/r_image_' + (num) + '.png')
+        img_processor = ProcessImage("r_digits/r_image_" + (num) + ".png")
         img = img_processor.preprocess()
         digits_imgs.append(img)
 
-    predicted_digits = np.argmax(model.predict(digits_imgs), axis = 1)
+    predicted_digits = np.argmax(model.predict(digits_imgs), axis=1)
     print("Predicted Digit: ", predicted_digits)
 
     actual_digits = [1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 4, 8, 9, 1]
@@ -156,15 +183,36 @@ def r_digits():
     accuracy = np.mean(predicted_digits == actual_digits)
     print("Accuracy: ", accuracy)
 
+
 def digits():
     digits_imgs = []
-    suffixes = ["1", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "2", "3", "4", "5", "6", "7", "8", "9"]
+    suffixes = [
+        "1",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+    ]
     for num in suffixes:
-        img_processor = ProcessImage('digits/digit' + (num) + '.png')
+        img_processor = ProcessImage("digits/digit" + (num) + ".png")
         img = img_processor.preprocess()
         digits_imgs.append(img)
 
-    predicted_digits = np.argmax(model.predict(digits_imgs), axis = 1)
+    predicted_digits = np.argmax(model.predict(digits_imgs), axis=1)
     print("Predicted Digit: ", predicted_digits)
 
     actual_digits = [7, 7, 0, 5, 3, 2, 1, 0, 8, 7, 4, 2, 9, 8, 5, 1, 1, 1, 7]
@@ -172,6 +220,7 @@ def digits():
 
     accuracy = np.mean(predicted_digits == actual_digits)
     print("Accuracy: ", accuracy)
+
 
 r_digits()
 digits()
