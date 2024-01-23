@@ -58,7 +58,7 @@ x_test = x_test.reshape(x_test.shape[0], -1) / 255.0
 # Create the model, fit it, then test it
 model = NaiveBayes()
 model.fit(x_train, y_train)
-y_predicted = model.predict(x_test)
+y_predicted = np.argmax(model.predict(x_test), axis = 1)
 accuracy = np.mean(y_predicted == y_test)
 
 
@@ -295,14 +295,14 @@ html(
                             }
                         }
                     },
-                    "retina_detect": true,
+                    "retina_detect": true
                 });
             </script>
         </body>
     </html>
     """,
-    height=20000,
-    width=20000,
+    height = 20000,
+    width = 20000
 )
 # Add css to make the iframe fullscreen
 st.markdown(
@@ -321,7 +321,7 @@ st.markdown(
         }
     </style>
     """,
-    unsafe_allow_html=True,
+    unsafe_allow_html = True
 )
 
 st.markdown(
@@ -337,25 +337,25 @@ st.markdown(
 )
 
 file = st.file_uploader(
-    label="""
+    label = """
         Please upload an image file. Check help button for details.
     """, # Short label explaining to the user what this file uploader is for
-    type=["jpg", "png"], # Array of allowed extensions
-    accept_multiple_files=False, # Boolean value to allow the user to upload multiple files at the same time
-    key=None, # Unique key for the widget
-    help="""
+    type = ["jpg", "png"], # Array of allowed extensions
+    accept_multiple_files = False, # Boolean value to allow the user to upload multiple files at the same time
+    key = None, # Unique key for the widget
+    help = """
     Note: Digits within images must be clearly visible, in focus, and centered. There must be no other objects in the image (shadows, lines, etc.).
         """, # Tooltip that gets displayed next to the file uploader
-    on_change=None, # Optional callback invoked when this file_uploader's value changes
-    args=None, # Optional tuple of args to pass to the callback
-    kwargs=None, # Optional dict of kwargs to pass to the callback
-    disabled=False, # Optional boolean which can disable the file uploader
-    label_visibility="visible" # Visibility of the label
+    on_change = None, # Optional callback invoked when this file_uploader's value changes
+    args = None, # Optional tuple of args to pass to the callback
+    kwargs = None, # Optional dict of kwargs to pass to the callback
+    disabled = False, # Optional boolean which can disable the file uploader
+    label_visibility = "visible" # Visibility of the label
 )
 
 if file is not None:
     # Read the uploaded file as a byte stream
-    file_bytes = np.asarray(bytearray(file.read()), dtype=np.uint8)
+    file_bytes = np.asarray(bytearray(file.read()), dtype = np.uint8)
 
     # Check if the byte stream is empty
     if file_bytes.size == 0:
@@ -370,12 +370,12 @@ if file is not None:
             left_column, right_column = st.columns(2)
 
             # Display the uploaded image
-            left_column.image(img, use_column_width=True)
+            left_column.image(img, use_column_width = True)
 
             # Process image
             image_processor = ProcessImage(img)
             final_image = image_processor.preprocess()
 
             # Predict procesed image
-            predicted_digit = model.predict([final_image])
+            predicted_digit = np.argmax(model.predict([final_image]), axis = 1)
             right_column.markdown("Predicted Digit: **:orange[" + str(predicted_digit[0]) + "]**")
