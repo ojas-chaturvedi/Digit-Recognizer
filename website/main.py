@@ -140,14 +140,63 @@ class ProcessImage:
 
         return shifted
 
+# html(
+#     """
+#     <html>
+#         <head>
+#             <script src = "https://cdnjs.cloudflare.com/ajax/libs/tsparticles/1.18.11/tsparticles.min.js"></script>
+#             <style>
+#                 #particles {
+#                     position: fixed;
+#                     top: 0;
+#                     left: 0;
+#                     right: 0;
+#                     bottom: 0;
+#                     width: 100%;
+#                     height: 100%;
+#                     z-index: -1;
+#                     overflow: hidden;
+#                     background-color: teal;
+#                 }
+#             </style>
+#         </head>
+#         <body>
+#             <div id = "particles">
+#             </div>
+#             <script>
+#                 tsParticles.load("particles", {
+#                     particles: {
+#                         number: {
+#                             value: 1000
+#                         },
+#                         move: {
+#                             enable: true
+#                         },
+#                         color: {
+#                             value: "#272701"
+#                         },
+#                     }
+#                 });
+#             </script>
+#         </body>
+#     </html>
+#     """,
+#     height = 20000,
+#     width = 20000,
+# )
+    
 html(
     """
     <html>
         <head>
-            <script src = "https://cdnjs.cloudflare.com/ajax/libs/tsparticles/1.18.11/tsparticles.min.js"></script>
+            <script src="http://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
             <style>
-                #particles {
-                    position: fixed;
+                body {
+                    margin: 0;
+                    background-color: teal;
+                }
+                #particles-js {
+                    position: absolute;
                     top: 0;
                     left: 0;
                     right: 0;
@@ -157,26 +206,127 @@ html(
                     z-index: -1;
                     overflow: hidden;
                     background-color: teal;
+                    background-image: url("");
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                    background-position: 50% 50%;
                 }
             </style>
         </head>
         <body>
-            <div id = "particles">
+            <div id = "particles-js">
             </div>
             <script>
-                tsParticles.load("particles", {
-                    particles: {
-                        number: {
-                            value: 1000
-                        },
-                        move: {
-                            enable: true
-                        },
-                        color: {
-                            value: "#272701"
-                        },
-                    }
-                });
+                particlesJS('particles-js',
+  
+  {
+    "particles": {
+      "number": {
+        "value": 80,
+        "density": {
+          "enable": true,
+          "value_area": 800
+        }
+      },
+      "color": {
+        "value": "#ffffff"
+      },
+      "shape": {
+        "type": "circle",
+        "stroke": {
+          "width": 0,
+          "color": "#000000"
+        },
+        "polygon": {
+          "nb_sides": 5
+        },
+        "image": {
+          "src": "img/github.svg",
+          "width": 100,
+          "height": 100
+        }
+      },
+      "opacity": {
+        "value": 0.5,
+        "random": false,
+        "anim": {
+          "enable": false,
+          "speed": 1,
+          "opacity_min": 0.1,
+          "sync": false
+        }
+      },
+      "size": {
+        "value": 5,
+        "random": true,
+        "anim": {
+          "enable": false,
+          "speed": 40,
+          "size_min": 0.1,
+          "sync": false
+        }
+      },
+      "line_linked": {
+        "enable": true,
+        "distance": 150,
+        "color": "#ffffff",
+        "opacity": 0.4,
+        "width": 1
+      },
+      "move": {
+        "enable": true,
+        "speed": 6,
+        "direction": "none",
+        "random": false,
+        "straight": false,
+        "out_mode": "out",
+        "attract": {
+          "enable": false,
+          "rotateX": 600,
+          "rotateY": 1200
+        }
+      }
+    },
+    "interactivity": {
+      "detect_on": "canvas",
+      "events": {
+        "onhover": {
+          "enable": true,
+          "mode": "repulse"
+        },
+        "onclick": {
+          "enable": true,
+          "mode": "push"
+        },
+        "resize": true
+      },
+      "modes": {
+        "grab": {
+          "distance": 400,
+          "line_linked": {
+            "opacity": 1
+          }
+        },
+        "bubble": {
+          "distance": 400,
+          "size": 40,
+          "duration": 2,
+          "opacity": 8,
+          "speed": 3
+        },
+        "repulse": {
+          "distance": 200
+        },
+        "push": {
+          "particles_nb": 4
+        },
+        "remove": {
+          "particles_nb": 2
+        }
+      }
+    },
+    "retina_detect": true,
+});
             </script>
         </body>
     </html>
@@ -204,18 +354,18 @@ st.markdown(
     unsafe_allow_html = True,
 )
 
-st.write(
+st.markdown(
     """
     # Handwritten Digit Recognizer
     """
 )
-st.write(
+st.markdown(
     "This is a simple image classification web app to predict a numerical handwritten digit."
 )
-st.write(
-    "Accuracy of model with mnist dataset: ", (accuracy * 100), "%"
+st.markdown(
+    "Accuracy of model with mnist dataset: **" + str(accuracy * 100) + "%**"
 )
-st.write(
+st.markdown(
     """
     Note: Digits within images must be clearly visible, in focus, and centered.
     There must be no other objects in the image (shadows, lines, etc.).
@@ -242,8 +392,8 @@ if file is not None:
         if img is None:
             st.error("Could not decode the image. Please upload a valid image file.")
         else:
-            # Display the processed image
-            st.image(img, use_column_width = True)
+            # Display the uploaded image
+            st.image(file)
 
             # Process image
             image_processor = ProcessImage(img)
@@ -251,4 +401,4 @@ if file is not None:
 
             # Predict procesed image
             predicted_digit = model.predict([final_image])
-            st.write("Predicted Digit: ", predicted_digit[0])
+            st.markdown("Predicted Digit: **" + str(predicted_digit[0]) + "**")
