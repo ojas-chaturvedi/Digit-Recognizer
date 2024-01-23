@@ -18,30 +18,35 @@ class NaiveBayes:
 
         for i in self.classes:
             self.priors.append(np.mean(y == i))
-            x_n = x[y == i]
-            self.means.append(np.mean(x_n, axis=0))
-            self.variances.append(np.var(x_n, axis=0) + 0.01575)
+            x_i = x[y == i]
+            self.means.append(np.mean(x_i, axis = 0))
+            self.variances.append(np.var(x_i, axis = 0) + 0.01575)
 
     def predict(self, x):
-        self.posteriors = []
+        posteriors = []
 
         for i in self.classes:
             log_prior = np.log(self.priors[i])
-            likelihood = np.sum(
-                np.log(self.gaussian(x, self.means[i], self.variances[i])), axis=1
-            )
-            posterior = likelihood + log_prior
-            self.posteriors.append(posterior)
+            likelihood = np.sum(np.log(self.gaussian(x, self.means[i], self.variances[i])), axis = 1)
+            posterior = np.exp(likelihood) * np.exp(log_prior)
+            posteriors.append(posterior)
 
-        self.posteriors = np.array(self.posteriors)
-        if self.posteriors.ndim == 2:
-            return np.argmax(self.posteriors, axis=0)
-        else:
-            return np.argmax(self.posteriors)
+        # .tranpose() swaps rows and columns
+        posteriors = np.array(posteriors).transpose()
+
+        # Since we can't directly get P(y | x) since we don't have P(x)
+        # We use the fact that P(x)(P(1 | x) + P(2 | x) + ... + P(10 | x)) = 1
+        # Thus we can solve for P(x) and use it as a scale factor to get the probability of P(y | x)
+        for i in range(len(posteriors)):
+            scale_factor = 1 / np.sum(posteriors[i])
+            posteriors[i] *= scale_factor
+
+        return posteriors
 
     def gaussian(self, x, mean, variance):
         numerator = np.exp(-((x - mean) ** 2) / (2 * variance))
         denominator = np.sqrt(2 * np.pi * variance)
+        
         return numerator / denominator
 
 
