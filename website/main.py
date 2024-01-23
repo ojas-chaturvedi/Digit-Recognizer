@@ -6,6 +6,7 @@ import math
 from scipy import ndimage
 from keras.datasets import mnist
 
+
 class NaiveBayes:
     def __init__(self):
         self.means = []
@@ -18,18 +19,20 @@ class NaiveBayes:
         for i in self.classes:
             self.priors.append(np.mean(y == i))
             x_n = x[y == i]
-            self.means.append(np.mean(x_n, axis = 0))
-            self.variances.append(np.var(x_n, axis = 0) + 0.01575)
+            self.means.append(np.mean(x_n, axis=0))
+            self.variances.append(np.var(x_n, axis=0) + 0.01575)
 
     def predict(self, x):
         self.posteriors = []
 
         for i in self.classes:
             log_prior = np.log(self.priors[i])
-            likelihood = np.sum(np.log(self.gaussian(x, self.means[i], self.variances[i])), axis = 1)
+            likelihood = np.sum(
+                np.log(self.gaussian(x, self.means[i], self.variances[i])), axis=1
+            )
             posterior = likelihood + log_prior
             self.posteriors.append(posterior)
-            
+
         self.posteriors = np.array(self.posteriors)
         if self.posteriors.ndim == 2:
             return np.argmax(self.posteriors, axis=0)
@@ -40,6 +43,7 @@ class NaiveBayes:
         numerator = np.exp(-((x - mean) ** 2) / (2 * variance))
         denominator = np.sqrt(2 * np.pi * variance)
         return numerator / denominator
+
 
 # Get the training and testing data from the mnist library
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
@@ -52,6 +56,7 @@ model.fit(x_train, y_train)
 y_predicted = model.predict(x_test)
 accuracy = np.mean(y_predicted == y_test)
 
+
 class ProcessImage:
     def __init__(self, image):
         self.image = image
@@ -61,7 +66,7 @@ class ProcessImage:
         img = self.image
 
         # Scale to 20x20, invert (like training)
-        img = cv2.resize(255 - img, (20, 20), interpolation = cv2.INTER_AREA)
+        img = cv2.resize(255 - img, (20, 20), interpolation=cv2.INTER_AREA)
 
         # img = cv2.GaussianBlur(img,(5,5),0)
 
@@ -121,7 +126,7 @@ class ProcessImage:
             int(math.ceil((28 - rows) / 2.0)),
             int(math.floor((28 - rows) / 2.0)),
         )
-        img = np.pad(img, (rowsPadding, colsPadding), 'constant')
+        img = np.pad(img, (rowsPadding, colsPadding), "constant")
 
         return img
 
@@ -140,6 +145,12 @@ class ProcessImage:
 
         return shifted
 
+st.set_page_config(
+    page_title="Handwritten Digit Recognizer",
+    page_icon="random",
+    layout="wide",
+)
+
 html(
     """
     <html>
@@ -148,7 +159,7 @@ html(
             <style>
                 body {
                     margin: 0;
-                    background-color: teal;
+                    background-color: #303030;
                 }
                 #particles-js {
                     position: absolute;
@@ -160,7 +171,7 @@ html(
                     height: 100%;
                     z-index: -1;
                     overflow: hidden;
-                    background-color: teal;
+                    background-color: #303030;
                     background-image: url("");
                     background-repeat: no-repeat;
                     background-size: cover;
@@ -285,8 +296,8 @@ html(
         </body>
     </html>
     """,
-    height = 20000,
-    width = 20000,
+    height=20000,
+    width=20000,
 )
 # Add css to make the iframe fullscreen
 st.markdown(
@@ -305,7 +316,7 @@ st.markdown(
         }
     </style>
     """,
-    unsafe_allow_html = True,
+    unsafe_allow_html=True,
 )
 
 st.markdown(
@@ -317,24 +328,29 @@ st.markdown(
     "This is a simple image classification web app to predict a numerical handwritten digit."
 )
 st.markdown(
-    "Accuracy of model with mnist dataset: **" + str(accuracy * 100) + "%**"
+    "Accuracy of model with MNIST dataset: **:orange[" + str(accuracy * 100) + "%]**"
 )
-st.markdown(
-    """
-    Note: Digits within images must be clearly visible, in focus, and centered.
-    There must be no other objects in the image (shadows, lines, etc.).
-    """
-)
+
 file = st.file_uploader(
-    """
-    Please upload an image file.
-    """,
-    type = ["jpg", "png"],
+    label="""
+        Please upload an image file. Check help button for details.
+    """, # Short label explaining to the user what this file uploader is for
+    type=["jpg", "png"], # Array of allowed extensions
+    accept_multiple_files=False, # Boolean value to allow the user to upload multiple files at the same time
+    key=None, # Unique key for the widget
+    help="""
+    Note: Digits within images must be clearly visible, in focus, and centered. There must be no other objects in the image (shadows, lines, etc.).
+        """, # Tooltip that gets displayed next to the file uploader
+    on_change=None, # Optional callback invoked when this file_uploader's value changes
+    args=None, # Optional tuple of args to pass to the callback
+    kwargs=None, # Optional dict of kwargs to pass to the callback
+    disabled=False, # Optional boolean which can disable the file uploader
+    label_visibility="visible" # Visibility of the label
 )
 
 if file is not None:
     # Read the uploaded file as a byte stream
-    file_bytes = np.asarray(bytearray(file.read()), dtype = np.uint8)
+    file_bytes = np.asarray(bytearray(file.read()), dtype=np.uint8)
 
     # Check if the byte stream is empty
     if file_bytes.size == 0:
@@ -346,8 +362,10 @@ if file is not None:
         if img is None:
             st.error("Could not decode the image. Please upload a valid image file.")
         else:
+            left_column, right_column = st.columns(2)
+
             # Display the uploaded image
-            st.image(file)
+            left_column.image(img, use_column_width=True)
 
             # Process image
             image_processor = ProcessImage(img)
@@ -355,4 +373,4 @@ if file is not None:
 
             # Predict procesed image
             predicted_digit = model.predict([final_image])
-            st.markdown("Predicted Digit: **" + str(predicted_digit[0]) + "**")
+            right_column.markdown("Predicted Digit: **:orange[" + str(predicted_digit[0]) + "]**")
