@@ -12,7 +12,6 @@ class NaiveBayes:
         self.means = []
         self.variances = []
         self.priors = []
-        self.posteriors = []
 
     def fit(self, x, y):
         self.classes = np.unique(y)
@@ -24,17 +23,25 @@ class NaiveBayes:
             self.variances.append(np.var(x_n, axis = 0) + 0.01559)
 
     def predict(self, x):
-        self.posteriors = []
+        posteriors = []
+
         for i in self.classes:
             log_prior = np.log(self.priors[i])
             likelihood = np.sum(np.log(self.gaussian(x, self.means[i], self.variances[i])), axis = 1)
-            posterior = likelihood + log_prior
-            self.posteriors.append(posterior)
-        self.posteriors = np.array(self.posteriors)
-        if self.posteriors.ndim == 2:
-            return np.argmax(self.posteriors, axis=0)
-        else:
-            return np.argmax(self.posteriors)
+            posterior = np.exp(likelihood) * np.exp(log_prior)
+            posteriors.append(posterior)
+
+        # .tranpose() swaps rows and columns
+        posteriors = np.array(posteriors).transpose()
+
+        # Since we can't directly get P(y | x) since we don't have P(x)
+        # We use the fact that P(x)(P(1 | x) + P(2 | x) + ... + P(10 | x)) = 1
+        # Thus we can solve for P(x) and use it as a scale factor to get the probability of P(y | x)
+        for i in range(len(posteriors)):
+            scale_factor = 1 / np.sum(posteriors[i])
+            posteriors[i] *= scale_factor
+
+        return posteriors
 
     def gaussian(self, x, mean, variance):
         numerator = np.exp(-((x - mean) ** 2) / (2 * variance))
@@ -128,7 +135,7 @@ x_test = x_test.reshape(x_test.shape[0], -1) / 255.0
 
 model = NaiveBayes()
 model.fit(x_train, y_train)
-y_predicted = model.predict(x_test)
+y_predicted = np.argmax(model.predict(x_test), axis = 1)
 accuracy = np.mean(y_predicted == y_test)
 print("Accuracy: ", accuracy)
 
@@ -140,7 +147,7 @@ def r_digits():
         img = img_processor.preprocess()
         digits_imgs.append(img)
 
-    predicted_digits = model.predict(digits_imgs)
+    predicted_digits = np.argmax(model.predict(digits_imgs), axis = 1)
     print("Predicted Digit: ", predicted_digits)
 
     actual_digits = [1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 4, 8, 9, 1]
@@ -157,7 +164,7 @@ def digits():
         img = img_processor.preprocess()
         digits_imgs.append(img)
 
-    predicted_digits = model.predict(digits_imgs)
+    predicted_digits = np.argmax(model.predict(digits_imgs), axis = 1)
     print("Predicted Digit: ", predicted_digits)
 
     actual_digits = [7, 7, 0, 5, 3, 2, 1, 0, 8, 7, 4, 2, 9, 8, 5, 1, 1, 1, 7]
