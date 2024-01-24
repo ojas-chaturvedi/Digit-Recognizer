@@ -21,16 +21,18 @@ class NaiveBayes:
         for i in self.classes:
             self.priors.append(np.mean(y == i))
             x_i = x[y == i]
-            self.means.append(np.mean(x_i, axis = 0))
-            self.variances.append(np.var(x_i, axis = 0) + 0.01575)
+            self.means.append(np.mean(x_i, axis=0))
+            self.variances.append(np.var(x_i, axis=0) + 0.01575)
 
     def predict(self, x):
         posteriors = []
 
         for i in self.classes:
             log_prior = np.log(self.priors[i])
-            likelihood = np.sum(np.log(self.gaussian(x, self.means[i], self.variances[i])), axis = 1)
-            posterior = likelihood + log_prior
+            likelihood = np.sum(
+                np.log(self.gaussian(x, self.means[i], self.variances[i])), axis=1
+            )
+            posterior = np.exp(likelihood) * np.exp(log_prior)
             posteriors.append(posterior)
 
         return np.argmax(posteriors, axis = 0)
@@ -38,7 +40,7 @@ class NaiveBayes:
     def gaussian(self, x, mean, variance):
         numerator = np.exp(-((x - mean) ** 2) / (2 * variance))
         denominator = np.sqrt(2 * np.pi * variance)
-        
+
         return numerator / denominator
 
 
@@ -141,6 +143,7 @@ class ProcessImage:
         shifted = cv2.warpAffine(img, M, (cols, rows))
 
         return shifted
+
 
 st.set_page_config(
     page_title="Handwritten Digit Recognizer",
@@ -293,8 +296,8 @@ html(
         </body>
     </html>
     """,
-    height = 20000,
-    width = 20000
+    height=20000,
+    width=20000,
 )
 # Add css to make the iframe fullscreen
 st.markdown(
@@ -313,7 +316,7 @@ st.markdown(
         }
     </style>
     """,
-    unsafe_allow_html = True
+    unsafe_allow_html=True,
 )
 
 st.markdown(
@@ -329,25 +332,25 @@ st.markdown(
 )
 
 file = st.file_uploader(
-    label = """
+    label="""
         Please upload an image file. Check help button for details.
-    """, # Short label explaining to the user what this file uploader is for
-    type = ["jpg", "png"], # Array of allowed extensions
-    accept_multiple_files = False, # Boolean value to allow the user to upload multiple files at the same time
-    key = None, # Unique key for the widget
-    help = """
+    """,  # Short label explaining to the user what this file uploader is for
+    type=["jpg", "png"],  # Array of allowed extensions
+    accept_multiple_files=False,  # Boolean value to allow the user to upload multiple files at the same time
+    key=None,  # Unique key for the widget
+    help="""
     Note: Digits within images must be clearly visible, in focus, and centered. There must be no other objects in the image (shadows, lines, etc.).
-        """, # Tooltip that gets displayed next to the file uploader
-    on_change = None, # Optional callback invoked when this file_uploader's value changes
-    args = None, # Optional tuple of args to pass to the callback
-    kwargs = None, # Optional dict of kwargs to pass to the callback
-    disabled = False, # Optional boolean which can disable the file uploader
-    label_visibility = "visible" # Visibility of the label
+        """,  # Tooltip that gets displayed next to the file uploader
+    on_change=None,  # Optional callback invoked when this file_uploader's value changes
+    args=None,  # Optional tuple of args to pass to the callback
+    kwargs=None,  # Optional dict of kwargs to pass to the callback
+    disabled=False,  # Optional boolean which can disable the file uploader
+    label_visibility="visible",  # Visibility of the label
 )
 
 if file is not None:
     # Read the uploaded file as a byte stream
-    file_bytes = np.asarray(bytearray(file.read()), dtype = np.uint8)
+    file_bytes = np.asarray(bytearray(file.read()), dtype=np.uint8)
 
     # Check if the byte stream is empty
     if file_bytes.size == 0:
@@ -362,7 +365,7 @@ if file is not None:
             left_column, right_column = st.columns(2)
 
             # Display the uploaded image
-            left_column.image(img, use_column_width = True)
+            left_column.image(img, use_column_width=True)
 
             # Process image
             image_processor = ProcessImage(img)
