@@ -2,6 +2,8 @@ import streamlit as st
 from streamlit.components.v1 import html
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 import math
 from scipy import ndimage
 from keras.datasets import mnist
@@ -28,20 +30,10 @@ class NaiveBayes:
         for i in self.classes:
             log_prior = np.log(self.priors[i])
             likelihood = np.sum(np.log(self.gaussian(x, self.means[i], self.variances[i])), axis = 1)
-            posterior = np.exp(likelihood) * np.exp(log_prior)
+            posterior = likelihood + log_prior
             posteriors.append(posterior)
 
-        # .tranpose() swaps rows and columns
-        posteriors = np.array(posteriors).transpose()
-
-        # Since we can't directly get P(y | x) since we don't have P(x)
-        # We use the fact that P(x)(P(1 | x) + P(2 | x) + ... + P(10 | x)) = 1
-        # Thus we can solve for P(x) and use it as a scale factor to get the probability of P(y | x)
-        for i in range(len(posteriors)):
-            scale_factor = 1 / np.sum(posteriors[i])
-            posteriors[i] *= scale_factor
-
-        return posteriors
+        return np.argmax(posteriors, axis = 0)
 
     def gaussian(self, x, mean, variance):
         numerator = np.exp(-((x - mean) ** 2) / (2 * variance))
@@ -58,9 +50,9 @@ x_test = x_test.reshape(x_test.shape[0], -1) / 255.0
 # Create the model, fit it, then test it
 model = NaiveBayes()
 model.fit(x_train, y_train)
-y_predicted = np.argmax(model.predict(x_test), axis = 1)
+y_predicted = model.predict(x_test)
 accuracy = np.mean(y_predicted == y_test)
-
+# print(accuracy)
 
 class ProcessImage:
     def __init__(self, image):
@@ -377,5 +369,10 @@ if file is not None:
             final_image = image_processor.preprocess()
 
             # Predict procesed image
-            predicted_digit = np.argmax(model.predict([final_image]), axis = 1)
+            predicted_digit = model.predict([final_image])
             right_column.markdown("Predicted Digit: **:orange[" + str(predicted_digit[0]) + "]**")
+
+            plt.figure(figsize=(15, 15))
+            sns.heatmap(model.means[predicted_digit[0]].reshape(28, 28), annot=True, cmap="YlGnBu", fmt=".2f", linewidths=0.5, square=True)
+            plt.axis('off')
+            st.pyplot(plt)
