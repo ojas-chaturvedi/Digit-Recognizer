@@ -1,5 +1,5 @@
 streamlit==1.30.0
-opencv-python==4.9.0.80
+opencv-python-headless==4.9.0.80
 numpy==1.26.3
 scipy==1.11.4
 keras==2.15.0
