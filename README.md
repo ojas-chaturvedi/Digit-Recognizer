@@ -2,9 +2,9 @@
 
 ## Introduction
 
-#### In this project, we have developed a Gaussian Naïve Bayes classifier from scratch to classify the MNIST dataset, which consists of 70,000 28x28 grayscale images of handwritten digits. We have also created a website where users can easily try out the Python model.
+In this project, we have developed a Gaussian Naïve Bayes classifier from scratch to classify the MNIST dataset, which consists of 70,000 28x28 grayscale images of handwritten digits. We have also created a website where users can easily try out the Python model.
 
-#### Our model is based on Bayesian statistics, which views probabilities as uncertain values that can be altered when new evidence is revealed (this is where the idea of conditional probabilities originates from). This differs from Frequentist statistics, which conversely views probabilities as fixed values based on the long-run relative frequency of an event occurring over repeated trials. The formula for Bayes Theorem can be seen below:
+Our model is based on Bayesian statistics, which views probabilities as uncertain values that can be altered when new evidence is revealed (this is where the idea of conditional probabilities originates from). This differs from Frequentist statistics, which conversely views probabilities as fixed values based on the long-run relative frequency of an event occurring over repeated trials. The formula for Bayes Theorem can be seen below:
 
 ![Bayes' Theorem Formula](/attachments/Bayes.jpg)
 
@@ -13,15 +13,11 @@
 * P(Y)/Prior probability: How likely the initial belief/event was to occur without any evidence
 * P(X)/Normalization constant. Probability of the evidence
 
-#### Note: Our model is called “Naïve” because it is assumed that the data’s features are independent of each other for any given class label.
-
-#### For reference, here is an example of a number from the MNIST dataset:
-
-![Example of MNIST Number](/attachments/MNIST_ex.png)
+Note: Our model is called “Naïve” because it is assumed that the data’s features are independent of each other for any given class label.
 
 ## Model Implementation
 
-#### The following section will run through our code line-by-line for our model:
+The following section will run through our code line-by-line for our model:
 
 1. This block of code imports the MNIST dataset and reshapes the feature arrays from 3D to 2D to make these features easier to work with.
 ```python
@@ -79,27 +75,43 @@ accuracy = np.mean(y_predicted == y_test)
 print("Accuracy: ", accuracy)
 ```
 
-#### For our website, we aimed to have users submit their pictures of digits on white backgrounds, so people can see how our model classified their image. However, we needed to implement a preprocessing pipeline for these images to be in the same format as the MNIST examples our model was trained on. Thus, this code block uses functions to scale the image, invert the image’s colors, center the number, and pad the image.
+For our website, we aimed to have users submit their pictures of digits on white backgrounds, so people can see how our model classified their image. However, we needed to implement a preprocessing pipeline for these images to be in the same format as the MNIST examples our model was trained on. Thus, this code block uses functions to scale the image, invert the image’s colors, center the number, and pad the image.
+
+## Preparing images for the model
+
+### Here is an example of a number from the MNIST dataset:
+
+![Example of MNIST Number](/attachments/MNIST_ex.png)
+
+### Steps
+- Resize the image to 20x20 pixels
+- Invert pixel values
+- Binarize the image
+- Trim the blank spaces of the image
+- Center the handwritten digit
+- Add 8x8 pixel padding
+- Normalize pixel values
+- Reshape the image into a 1D array
 
 ## Discussion/Limitations
 
-#### Our model, although having an accuracy of 81.56%, still has some limitations in accuracy, as seen by our confusion matrix. For example, from the heat map below, it can be seen that our model often mistakes 4s for 9s. This could be because of how similar the heat maps of these two classes are, but we are unsure exactly why this happens.
+Our model, although having an accuracy of 81.56%, still has some limitations in accuracy, as seen by our confusion matrix. For example, from the heat map below, it can be seen that our model often mistakes 4s for 9s. This could be because of how similar the heat maps of these two classes are, but we are unsure exactly why this happens.
 
-#### Confusion Matrix
+### Confusion Matrix
 
 ![Confusion Matrix](/attachments/ConfusionMatrix.png)
 
-#### Heat Map of a 4 and 9, respectively
+### Heat Map of a 4 and 9, respectively
 
 ![Heat Map of a 4](/attachments/HeatMap4.png)
 
 ![Heat Map of a 9](/attachments/HeatMap9.png)
 
-#### Example of a misclassification
+### Example of a misclassification
 
 ![Misclassification Example](/attachments/Misclassification.jpg)
 
-#### Additionally, when we experimented with the posterior probabilities, we saw that our model was always 100% sure of its predicted number, even if its prediction was wrong. Again, we are not sure why this occurs.
+Additionally, when we experimented with the posterior probabilities, we saw that our model was always 100% sure of its predicted number, even if its prediction was wrong. Again, we are not sure why this occurs.
 
 ## [Here is Our Website!](https://handwritten-digit-recognizer.streamlit.app/)
 https://handwritten-digit-recognizer.streamlit.app/
