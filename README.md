@@ -6,7 +6,7 @@
 
 #### Our model is based on Bayesian statistics, which views probabilities as uncertain values that can be altered when new evidence is revealed (this is where the idea of conditional probabilities originates from). This differs from Frequentist statistics, which conversely views probabilities as fixed values based on the long-run relative frequency of an event occurring over repeated trials. The formula for Bayes Theorem can be seen below:
 
-![Bayes' Theorem Formula](/writing/Bayes.jpg)
+![Bayes' Theorem Formula](/attachments/Bayes.jpg)
 
 * P(Y | X)/Posterior probability: The updated probability of your belief occurring based on how likely the event was to occur before new evidence was introduced (the prior probability) and how likely this evidence was to appear for the given class (the likelihood)
 * P(X | Y)/Likelihood: The probability of the evidence/features appearing given a certain belief/class
@@ -17,7 +17,7 @@
 
 #### For reference, here is an example of a number from the MNIST dataset:
 
-![Example of MNIST Number](/writing/MNIST_ex.png)
+![Example of MNIST Number](/attachments/MNIST_ex.png)
 
 ## Model Implementation
 
@@ -96,17 +96,17 @@ print("Accuracy: ", accuracy)
 
 #### Confusion Matrix
 
-![Confusion Matrix](/writing/ConfusionMatrix.png)
+![Confusion Matrix](/attachments/ConfusionMatrix.png)
 
 #### Heat Map of a 4 and 9, respectively
 
-![Heat Map of a 4](/writing/HeatMap4.png)
+![Heat Map of a 4](/attachments/HeatMap4.png)
 
-![Heat Map of a 9](/writing/HeatMap9.png)
+![Heat Map of a 9](/attachments/HeatMap9.png)
 
 #### Example of a misclassification
 
-![Misclassification Example](/writing/Misclassification.jpg)
+![Misclassification Example](/attachments/Misclassification.jpg)
 
 #### Additionally, when we experimented with the posterior probabilities, we saw that our model was always 100% sure of its predicted number, even if its prediction was wrong. Again, we are not sure why this occurs.
 
