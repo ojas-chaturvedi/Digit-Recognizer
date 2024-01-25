@@ -28,43 +28,43 @@ x_test = x_test.reshape(x_test.shape[0], -1) / 255.0
 2. This code defines our model as an object, with three attributes (means, variances, priors) that will be used later when performing classification.
 ```python
 class NaiveBayes:
-  def __init__(self):
-  self.means = []
-  self.variances = []
-  self.priors = []
+    def __init__(self):
+    self.means = []
+    self.variances = []
+    self.priors = []
 ```
 3. This code saves the ten classes from the dataset in the “classes” attribute. Additionally, for each class, the model saves the mean and variance for each pixel. This will be used later when we use a Gaussian to help classify our data (a Gaussian is used because our features are continuous, not discrete). The hard coded parameter 0.01575 exists to ensure no variance value is 0 (this would cause a divide by 0 error when implementing the Gaussian).
 ```python
-  def fit(self, x, y):
-    self.classes = np.unique(y)
+    def fit(self, x, y):
+        self.classes = np.unique(y)
 
-    for i in self.classes:
-      self.priors.append(np.mean(y == i))
-      x_i = x[y == i]
-      self.means.append(np.mean(x_i, axis = 0))
-      self.variances.append(np.var(x_i, axis = 0) + 0.01575)
+        for i in self.classes:
+        self.priors.append(np.mean(y == i))
+        x_i = x[y == i]
+        self.means.append(np.mean(x_i, axis = 0))
+        self.variances.append(np.var(x_i, axis = 0) + 0.01575)
 ```
 4. This code defines the Gaussian.
 ```python
-  def gaussian(self, x, mean, variance):
-    numerator = np.exp(-((x - mean) ** 2) / (2 * variance))
-    denominator = np.sqrt(2 * np.pi * variance)
-        
-    return numerator / denominator
+    def gaussian(self, x, mean, variance):
+        numerator = np.exp(-((x - mean) ** 2) / (2 * variance))
+        denominator = np.sqrt(2 * np.pi * variance)
+            
+        return numerator / denominator
 ```
 5. This code computes the log of the priors, the log of the p-value for each pixel in a given training/testing example, and the posteriors of each class. Then, the class corresponding with the maximum posterior is returned.
 - Note: The posteriors variable doesn’t hold the actual posteriors of each class because we summed the priors with the likelihoods.
 ```python
-  def predict(self, x):
-    posteriors = []
+    def predict(self, x):
+        posteriors = []
 
-    for i in self.classes:
-      log_prior = np.log(self.priors[i])
-      likelihood = np.sum(np.log(self.gaussian(x, self.means[i], self.variances[i])), axis = 1)
-      posterior = likelihood + log_prior
-      posteriors.append(posterior)
+        for i in self.classes:
+        log_prior = np.log(self.priors[i])
+        likelihood = np.sum(np.log(self.gaussian(x, self.means[i], self.variances[i])), axis = 1)
+        posterior = likelihood + log_prior
+        posteriors.append(posterior)
 
-    return np.argmax(posteriors, axis = 0)
+        return np.argmax(posteriors, axis = 0)
 ```
 6. This code classifies the test examples of the dataset and returns the accuracy score of the model.
 ```python
