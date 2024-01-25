@@ -91,7 +91,7 @@ For our website, we aimed to have users submit their pictures of digits on white
 
 ## Preparing images for the model
 
-### Here is an example of a number from the MNIST dataset:
+### Here is an example of a digit from the MNIST dataset:
 
 ![Example of MNIST Number](/attachments/MNIST_ex.png)
 
