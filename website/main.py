@@ -1,14 +1,3 @@
-import sys
-import subprocess
-# implement pip as a subprocess:
-subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'streamlit'])
-subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'numpy'])
-subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'opencv-python'])
-# subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'matplotlib'])
-# subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'seaborn'])
-subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'scipy'])
-subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'keras'])
-
 import streamlit as st
 from streamlit.components.v1 import html
 import cv2
@@ -77,8 +66,6 @@ class ProcessImage:
         # Scale to 20x20, invert (like training)
         img = cv2.resize(255 - img, (20, 20), interpolation=cv2.INTER_AREA)
 
-        # img = cv2.GaussianBlur(img,(5,5),0)
-
         # Make gray into black (uniform background like training)
         _, img = cv2.threshold(img, 128, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
@@ -89,9 +76,6 @@ class ProcessImage:
         shiftx, shifty = self.getBestShift(img)
         shifted = self.shift(img, shiftx, shifty)
         img = shifted
-
-        # DEBUG
-        # cv2.imwrite("output.png", img)
 
         # Normalize the image
         img = img / 255.0
