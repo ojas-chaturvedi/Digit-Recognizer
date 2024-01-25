@@ -32,7 +32,7 @@ class NaiveBayes:
             likelihood = np.sum(
                 np.log(self.gaussian(x, self.means[i], self.variances[i])), axis=1
             )
-            posterior = np.exp(likelihood) * np.exp(log_prior)
+            posterior = likelihood + log_prior
             posteriors.append(posterior)
 
         return np.argmax(posteriors, axis = 0)
@@ -42,7 +42,6 @@ class NaiveBayes:
         denominator = np.sqrt(2 * np.pi * variance)
 
         return numerator / denominator
-
 
 # Get the training and testing data from the mnist library
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
@@ -373,7 +372,9 @@ if file is not None:
 
             # Predict procesed image
             predicted_digit = model.predict([final_image])
-            right_column.markdown("Predicted Digit: **:orange[" + str(predicted_digit[0]) + "]**")
+            right_column.markdown(
+                "Predicted Digit: **:orange[" + str(predicted_digit[0]) + "]**"
+            )
 
             plt.figure(figsize=(15, 15))
             sns.heatmap(model.means[predicted_digit[0]].reshape(28, 28), annot=True, cmap="YlGnBu", fmt=".2f", linewidths=0.5, square=True)
