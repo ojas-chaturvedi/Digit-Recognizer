@@ -24,7 +24,7 @@
 #### The following section will run through our code line-by-line for our model:
 
 1. This block of code imports the MNIST dataset and reshapes the feature arrays from 3D to 2D to make these features easier to work with.
-```
+```python
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 plt.imshow(x_train[1], cmap='gray')
 plt.plot()
@@ -32,7 +32,7 @@ x_train = x_train.reshape(x_train.shape[0], -1) / 255.0
 x_test = x_test.reshape(x_test.shape[0], -1) / 255.0
 ```
 2. This code defines our model as an object, with three attributes (means, variances, priors) that will be used later when performing classification.
-```
+```python
 class NaiveBayes:
   def __init__(self):
   self.means = []
@@ -49,7 +49,7 @@ class NaiveBayes:
       self.variances.append(np.var(x_i, axis = 0) + 0.01575)
 ```
 3. This code saves the ten classes from the dataset in the “classes” attribute. Additionally, for each class, the model saves the mean and variance for each pixel. This will be used later when we use a Gaussian to help classify our data (a Gaussian is used because our features are continuous, not discrete). The hard coded parameter 0.01575 exists to ensure no variance value is 0 (this would cause a divide by 0 error when implementing the Gaussian).
-```
+```python
   def predict(self, x):
     posteriors = []
 
@@ -60,7 +60,7 @@ class NaiveBayes:
       posteriors.append(posterior)
 ```
 4. This code defines the Gaussian.
-```
+```python
   def gaussian(self, x, mean, variance):
     numerator = np.exp(-((x - mean) ** 2) / (2 * variance))
     denominator = np.sqrt(2 * np.pi * variance)
@@ -69,7 +69,7 @@ class NaiveBayes:
 ```
 5. This code computes the log of the priors, the log of the p-value for each pixel in a given training/testing example, and the posteriors of each class. Then, the class corresponding with the maximum posterior is returned.
 - Note: The posteriors variable doesn’t hold the actual posteriors of each class because we summed the priors with the likelihoods.
-```
+```python
   def predict(self, x):
     posteriors = []
 
@@ -82,7 +82,7 @@ class NaiveBayes:
     return np.argmax(posteriors, axis = 0)
 ```
 6. This code classifies the test examples of the dataset and returns the accuracy score of the model.
-```
+```python
 model = NaiveBayes()
 model.fit(x_train, y_train)
 y_predicted = model.predict(x_test)
