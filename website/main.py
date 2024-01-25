@@ -4,7 +4,7 @@ import subprocess
 subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'streamlit'])
 subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'numpy'])
 subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'opencv-python'])
-subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'matplotlib'])
+# subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'matplotlib'])
 subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'seaborn'])
 subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'scipy'])
 subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'keras'])
