@@ -92,7 +92,7 @@ print("Accuracy: ", accuracy)
 
 ## Discussion/Limitations
 
-#### Our model, although having an 81.56%, still has some limitations in accuracy, as seen by our confusion matrix. For example, from the heat map below, it can be seen that our model often mistakes 4s for 9s. This could be because of how similar the heat maps of these two classes are, but we are unsure exactly why this happens.
+#### Our model, although having an accuracy of 81.56%, still has some limitations in accuracy, as seen by our confusion matrix. For example, from the heat map below, it can be seen that our model often mistakes 4s for 9s. This could be because of how similar the heat maps of these two classes are, but we are unsure exactly why this happens.
 
 #### Confusion Matrix
 
@@ -111,3 +111,4 @@ print("Accuracy: ", accuracy)
 #### Additionally, when we experimented with the posterior probabilities, we saw that our model was always 100% sure of its predicted number, even if its prediction was wrong. Again, we are not sure why this occurs.
 
 ## [Here is Our Website!](https://handwritten-digit-recognizer.streamlit.app/)
+https://handwritten-digit-recognizer.streamlit.app/
