@@ -62,7 +62,7 @@ class NaiveBayes:
 
 5. This code computes the log of the priors, the log of the p-value for each pixel in a given training/testing example, and the posteriors of each class. Then, the class corresponding with the maximum posterior is returned.
 
-- Note: The posteriors variable doesn’t hold the actual posteriors of each class because we summed the priors with the likelihoods.
+- Note: The posteriors variable doesn’t hold the actual posteriors of each class because we only multiplied the likelihood by the prior.
 
 ```python
     def predict(self, x):
