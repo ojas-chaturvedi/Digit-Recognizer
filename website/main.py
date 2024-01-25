@@ -155,7 +155,7 @@ html(
             <style>
                 body {
                     margin: 0;
-                    background-color: #303030;
+                    background-color: teal;
                 }
                 #particles-js {
                     position: absolute;
@@ -167,7 +167,7 @@ html(
                     height: 100%;
                     z-index: -1;
                     overflow: hidden;
-                    background-color: #303030;
+                    background-color: teal;
                     background-image: url("");
                     background-repeat: no-repeat;
                     background-size: cover;
