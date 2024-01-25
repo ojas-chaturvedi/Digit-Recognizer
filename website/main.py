@@ -35,13 +35,14 @@ class NaiveBayes:
             posterior = likelihood + log_prior
             posteriors.append(posterior)
 
-        return np.argmax(posteriors, axis = 0)
+        return np.argmax(posteriors, axis=0)
 
     def gaussian(self, x, mean, variance):
         numerator = np.exp(-((x - mean) ** 2) / (2 * variance))
         denominator = np.sqrt(2 * np.pi * variance)
 
         return numerator / denominator
+
 
 # Get the training and testing data from the mnist library
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
@@ -53,7 +54,7 @@ model = NaiveBayes()
 model.fit(x_train, y_train)
 y_predicted = model.predict(x_test)
 accuracy = np.mean(y_predicted == y_test)
-# print(accuracy)
+
 
 class ProcessImage:
     def __init__(self, image):
@@ -147,7 +148,7 @@ class ProcessImage:
 st.set_page_config(
     page_title="Handwritten Digit Recognizer",
     page_icon="random",
-    layout="wide",
+    # layout="wide",
 )
 
 html(
@@ -318,9 +319,9 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-st.markdown(
+st.title(
     """
-    # Handwritten Digit Recognizer
+    Handwritten Digit Recognizer
     """
 )
 st.markdown(
@@ -361,22 +362,32 @@ if file is not None:
         if img is None:
             st.error("Could not decode the image. Please upload a valid image file.")
         else:
-            left_column, right_column = st.columns(2)
-
-            # Display the uploaded image
-            left_column.image(img, use_column_width=True)
-
             # Process image
             image_processor = ProcessImage(img)
             final_image = image_processor.preprocess()
 
             # Predict procesed image
             predicted_digit = model.predict([final_image])
-            right_column.markdown(
-                "Predicted Digit: **:orange[" + str(predicted_digit[0]) + "]**"
+            st.markdown(
+                "<h3 style='text-align: center; color: orange;'>Predicted Digit: "
+                + str(predicted_digit[0])
+                + "</h1>",
+                unsafe_allow_html=True,
             )
 
+            left_column, right_column = st.columns(2)
+
+            # Display the uploaded image
+            left_column.image(img, use_column_width=True)
+
             plt.figure(figsize=(15, 15))
-            sns.heatmap(model.means[predicted_digit[0]].reshape(28, 28), annot=True, cmap="YlGnBu", fmt=".2f", linewidths=0.5, square=True)
-            plt.axis('off')
-            st.pyplot(plt)
+            sns.heatmap(
+                model.means[predicted_digit[0]].reshape(28, 28),
+                annot=True,
+                cmap="YlGnBu",
+                fmt=".2f",
+                linewidths=0.5,
+                square=True,
+            )
+            plt.axis("off")
+            right_column.pyplot(plt)
