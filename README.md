@@ -29,9 +29,9 @@ x_test = x_test.reshape(x_test.shape[0], -1) / 255.0
 ```python
 class NaiveBayes:
     def __init__(self):
-    self.means = []
-    self.variances = []
-    self.priors = []
+        self.means = []
+        self.variances = []
+        self.priors = []
 ```
 3. This code saves the ten classes from the dataset in the “classes” attribute. Additionally, for each class, the model saves the mean and variance for each pixel. This will be used later when we use a Gaussian to help classify our data (a Gaussian is used because our features are continuous, not discrete). The hard coded parameter 0.01575 exists to ensure no variance value is 0 (this would cause a divide by 0 error when implementing the Gaussian).
 ```python
@@ -39,10 +39,10 @@ class NaiveBayes:
         self.classes = np.unique(y)
 
         for i in self.classes:
-        self.priors.append(np.mean(y == i))
-        x_i = x[y == i]
-        self.means.append(np.mean(x_i, axis = 0))
-        self.variances.append(np.var(x_i, axis = 0) + 0.01575)
+            self.priors.append(np.mean(y == i))
+            x_i = x[y == i]
+            self.means.append(np.mean(x_i, axis = 0))
+            self.variances.append(np.var(x_i, axis = 0) + 0.01575)
 ```
 4. This code defines the Gaussian.
 ```python
@@ -59,10 +59,10 @@ class NaiveBayes:
         posteriors = []
 
         for i in self.classes:
-        log_prior = np.log(self.priors[i])
-        likelihood = np.sum(np.log(self.gaussian(x, self.means[i], self.variances[i])), axis = 1)
-        posterior = likelihood + log_prior
-        posteriors.append(posterior)
+            log_prior = np.log(self.priors[i])
+            likelihood = np.sum(np.log(self.gaussian(x, self.means[i], self.variances[i])), axis = 1)
+            posterior = likelihood + log_prior
+            posteriors.append(posterior)
 
         return np.argmax(posteriors, axis = 0)
 ```
