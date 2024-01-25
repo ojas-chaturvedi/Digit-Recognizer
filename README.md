@@ -8,10 +8,10 @@ Our model is based on Bayesian statistics, which views probabilities as uncertai
 
 ![Bayes' Theorem Formula](/attachments/Bayes.jpg)
 
-* P(Y | X)/Posterior probability: The updated probability of your belief occurring based on how likely the event was to occur before new evidence was introduced (the prior probability) and how likely this evidence was to appear for the given class (the likelihood)
-* P(X | Y)/Likelihood: The probability of the evidence/features appearing given a certain belief/class
-* P(Y)/Prior probability: How likely the initial belief/event was to occur without any evidence
-* P(X)/Normalization constant. Probability of the evidence
+- P(Y | X)/Posterior probability: The updated probability of your belief occurring based on how likely the event was to occur before new evidence was introduced (the prior probability) and how likely this evidence was to appear for the given class (the likelihood)
+- P(X | Y)/Likelihood: The probability of the evidence/features appearing given a certain belief/class
+- P(Y)/Prior probability: How likely the initial belief/event was to occur without any evidence
+- P(X)/Normalization constant. Probability of the evidence
 
 Note: Our model is called “Naïve” because it is assumed that the data’s features are independent of each other for any given class label.
 
@@ -20,12 +20,15 @@ Note: Our model is called “Naïve” because it is assumed that the data’s f
 The following section will run through our code line-by-line for our model:
 
 1. This block of code imports the MNIST dataset and reshapes the feature arrays from 3D to 2D to make these features easier to work with.
+
 ```python
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 x_train = x_train.reshape(x_train.shape[0], -1) / 255.0
 x_test = x_test.reshape(x_test.shape[0], -1) / 255.0
 ```
+
 2. This code defines our model as an object, with three attributes (means, variances, priors) that will be used later when performing classification.
+
 ```python
 class NaiveBayes:
     def __init__(self):
@@ -33,7 +36,9 @@ class NaiveBayes:
         self.variances = []
         self.priors = []
 ```
+
 3. This code saves the ten classes from the dataset in the “classes” attribute. Additionally, for each class, the model saves the mean and variance for each pixel. This will be used later when we use a Gaussian to help classify our data (a Gaussian is used because our features are continuous, not discrete). The hard coded parameter 0.01575 exists to ensure no variance value is 0 (this would cause a divide by 0 error when implementing the Gaussian).
+
 ```python
     def fit(self, x, y):
         self.classes = np.unique(y)
@@ -44,16 +49,21 @@ class NaiveBayes:
             self.means.append(np.mean(x_i, axis = 0))
             self.variances.append(np.var(x_i, axis = 0) + 0.01575)
 ```
+
 4. This code defines the Gaussian.
+
 ```python
     def gaussian(self, x, mean, variance):
         numerator = np.exp(-((x - mean) ** 2) / (2 * variance))
         denominator = np.sqrt(2 * np.pi * variance)
-            
+
         return numerator / denominator
 ```
+
 5. This code computes the log of the priors, the log of the p-value for each pixel in a given training/testing example, and the posteriors of each class. Then, the class corresponding with the maximum posterior is returned.
+
 - Note: The posteriors variable doesn’t hold the actual posteriors of each class because we summed the priors with the likelihoods.
+
 ```python
     def predict(self, x):
         posteriors = []
@@ -66,7 +76,9 @@ class NaiveBayes:
 
         return np.argmax(posteriors, axis = 0)
 ```
+
 6. This code classifies the test examples of the dataset and returns the accuracy score of the model.
+
 ```python
 model = NaiveBayes()
 model.fit(x_train, y_train)
@@ -84,6 +96,7 @@ For our website, we aimed to have users submit their pictures of digits on white
 ![Example of MNIST Number](/attachments/MNIST_ex.png)
 
 ### Steps
+
 - Resize the image to 20x20 pixels
 - Invert pixel values
 - Binarize the image
@@ -114,4 +127,5 @@ Our model, although having an accuracy of 81.56%, still has some limitations in 
 Additionally, when we experimented with the posterior probabilities, we saw that our model was always 100% sure of its predicted number, even if its prediction was wrong. Again, we are not sure why this occurs.
 
 ## [Here is Our Website!](https://handwritten-digit-recognizer.streamlit.app/)
+
 https://handwritten-digit-recognizer.streamlit.app/
