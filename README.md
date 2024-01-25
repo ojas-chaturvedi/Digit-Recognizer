@@ -26,8 +26,6 @@
 1. This block of code imports the MNIST dataset and reshapes the feature arrays from 3D to 2D to make these features easier to work with.
 ```python
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
-plt.imshow(x_train[1], cmap='gray')
-plt.plot()
 x_train = x_train.reshape(x_train.shape[0], -1) / 255.0
 x_test = x_test.reshape(x_test.shape[0], -1) / 255.0
 ```
@@ -108,7 +106,7 @@ print("Accuracy: ", accuracy)
 
 #### Example of a misclassification
 
-![Heat Map of a 9](/writing/Misclassification.jpg)
+![Misclassification Example](/writing/Misclassification.jpg)
 
 #### Additionally, when we experimented with the posterior probabilities, we saw that our model was always 100% sure of its predicted number, even if its prediction was wrong. Again, we are not sure why this occurs.
 
