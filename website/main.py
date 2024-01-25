@@ -317,14 +317,14 @@ st.markdown(
 
 st.title(
     """
-    Handwritten Digit Recognizer
+    :white[Handwritten Digit Recognizer]
     """
 )
 st.markdown(
-    "This is a simple image classification web app to predict a numerical handwritten digit."
+    ":white[This is a simple image classification web app to predict a numerical handwritten digit.]"
 )
 st.markdown(
-    "Accuracy of model with MNIST dataset: **:orange[" + str(accuracy * 100) + "%]**"
+    ":white[Accuracy of model with MNIST dataset:] **:orange[" + str(accuracy * 100) + "%]**"
 )
 
 file = st.file_uploader(
@@ -335,7 +335,7 @@ file = st.file_uploader(
     accept_multiple_files=False,  # Boolean value to allow the user to upload multiple files at the same time
     key=None,  # Unique key for the widget
     help="""
-    Note: Digits within images must be clearly visible, in focus, and centered. There must be no other objects in the image (shadows, lines, etc.).
+    :white[Note: Digits within images must be clearly visible, in focus, and centered. There must be no other objects in the image (shadows, lines, etc.).]
         """,  # Tooltip that gets displayed next to the file uploader
     on_change=None,  # Optional callback invoked when this file_uploader's value changes
     args=None,  # Optional tuple of args to pass to the callback
@@ -350,13 +350,13 @@ if file is not None:
 
     # Check if the byte stream is empty
     if file_bytes.size == 0:
-        st.error("The uploaded file is empty. Please upload a valid image file.")
+        st.error(":white[The uploaded file is empty. Please upload a valid image file.]")
     else:
         # Use OpenCV to read the image data
         img = cv2.imdecode(file_bytes, cv2.IMREAD_GRAYSCALE)
 
         if img is None:
-            st.error("Could not decode the image. Please upload a valid image file.")
+            st.error(":white[Could not decode the image. Please upload a valid image file.]")
         else:
             # Process image
             image_processor = ProcessImage(img)
