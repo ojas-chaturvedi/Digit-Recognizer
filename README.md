@@ -8,10 +8,10 @@ Our model is based on Bayesian statistics, which views probabilities as uncertai
 
 ![Bayes' Theorem Formula](/attachments/Bayes.jpg)
 
-- P(Y | X)/Posterior probability: The updated probability of your belief occurring based on how likely the event was to occur before new evidence was introduced (the prior probability) and how likely this evidence was to appear for the given class (the likelihood)
-- P(X | Y)/Likelihood: The probability of the evidence/features appearing given a certain belief/class
-- P(Y)/Prior probability: How likely the initial belief/event was to occur without any evidence
-- P(X)/Normalization constant. Probability of the evidence
+- P(Y|X) / Posterior probability: The updated probability of your belief occurring based on how likely the event was to occur before new evidence was introduced (the prior probability) and how likely this evidence was to appear for the given class (the likelihood)
+- P(X|Y) / Likelihood: The probability of the evidence/features appearing given a certain belief/class
+- P(Y) / Prior probability: How likely the initial belief/event was to occur without any evidence
+- P(X) / Normalization constant. Probability of the evidence
 
 Note: Our model is called “Naïve” because it is assumed that the data’s features are independent of each other for any given class label.
 
