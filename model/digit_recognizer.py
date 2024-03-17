@@ -1,3 +1,4 @@
+# Import necessary libraries
 import numpy as np
 from keras.datasets import mnist
 import cv2
@@ -5,220 +6,198 @@ import math
 from scipy import ndimage
 
 
-class NaiveBayes:
+class NaiveBayesClassifier:
     def __init__(self):
-        self.means = []
-        self.variances = []
-        self.priors = []
+        # Initialize lists to store means, variances, and priors for each class
+        self.class_means = []
+        self.class_variances = []
+        self.class_priors = []
 
-    def fit(self, x, y):
-        self.classes = np.unique(y)
+    def fit(self, features, labels):
+        # Train the classifier with features and labels
+        self.unique_classes = np.unique(labels)
 
-        for i in self.classes:
-            self.priors.append(np.mean(y == i))
-            x_n = x[y == i]
-            self.means.append(np.mean(x_n, axis=0))
-            self.variances.append(np.var(x_n, axis=0) + 0.01575)
+        for class_index in self.unique_classes:
+            self.class_priors.append(np.mean(labels == class_index))
+            features_for_class = features[labels == class_index]
+            self.class_means.append(np.mean(features_for_class, axis=0))
+            self.class_variances.append(np.var(features_for_class, axis=0) + 0.01575)
 
-    def predict(self, x):
-        posteriors = []
+    def predict(self, features):
+        # Predict the class for each feature set in features
+        class_posteriors = []
 
-        for i in self.classes:
-            log_prior = np.log(self.priors[i])
-            likelihood = np.sum(
-                np.log(self.gaussian(x, self.means[i], self.variances[i])), axis=1
+        for class_index in self.unique_classes:
+            log_prior = np.log(self.class_priors[class_index])
+            class_likelihood = np.sum(
+                np.log(self.gaussian_distribution(features, self.class_means[class_index], self.class_variances[class_index])), axis=1
             )
-            posterior = np.exp(likelihood) * np.exp(log_prior)
-            posteriors.append(posterior)
+            posterior = np.exp(class_likelihood) * np.exp(log_prior)
+            class_posteriors.append(posterior)
 
-        # .tranpose() swaps rows and columns
-        posteriors = np.array(posteriors).transpose()
+        class_posteriors = np.array(class_posteriors).transpose()
 
-        # Since we can't directly get P(y | x) since we don't have P(x)
-        # We use the fact that P(x)(P(1 | x) + P(2 | x) + ... + P(10 | x)) = 1
-        # Thus we can solve for P(x) and use it as a scale factor to get the probability of P(y | x)
-        for i in range(len(posteriors)):
-            scale_factor = 1 / np.sum(posteriors[i])
-            posteriors[i] *= scale_factor
+        # Normalize the posteriors to get probabilities
+        for i in range(len(class_posteriors)):
+            normalization_factor = 1 / np.sum(class_posteriors[i])
+            class_posteriors[i] *= normalization_factor
 
-        return posteriors
+        return class_posteriors
 
-    def gaussian(self, x, mean, variance):
+    def gaussian_distribution(self, x, mean, variance):
+        # Calculate the Gaussian distribution
         numerator = np.exp(-((x - mean) ** 2) / (2 * variance))
         denominator = np.sqrt(2 * np.pi * variance)
         return numerator / denominator
 
 
-class ProcessImage:
+class ImagePreprocessor:
     def __init__(self, image_path):
-        self.path = image_path
+        # Initialize the image processor with the path to the image to be processed
+        self.image_path = image_path
 
     def preprocess(self):
-        # Read the image
-        img = cv2.imread(self.path, cv2.IMREAD_GRAYSCALE)
+        # Load the image in grayscale
+        image = cv2.imread(self.image_path, cv2.IMREAD_GRAYSCALE)
 
-        # Scale to 20x20, invert (like training)
-        img = cv2.resize(255 - img, (20, 20), interpolation=cv2.INTER_AREA)
+        # Resize and invert the image to a 20x20 pixel size for uniformity with training data
+        image = cv2.resize(255 - image, (20, 20), interpolation=cv2.INTER_AREA)
 
-        # img = cv2.GaussianBlur(img,(5,5),0)
+        # Apply thresholding to convert the grayscale image to binary (black and white)
+        _, image = cv2.threshold(image, 128, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
-        # Make gray into black (uniform background like training)
-        _, img = cv2.threshold(img, 128, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        # Remove any empty (black) borders to center the digit
+        image = self.trim_empty_borders(image)
 
-        # Remove completely black (empty) rows/cols on all sides
-        img = self.trim(img)
+        # Calculate the best shift to center the digit within the image
+        shift_x, shift_y = self.calculate_best_shift(image)
+        image = self.shift_image(image, shift_x, shift_y)
 
-        # Center digit
-        shiftx, shifty = self.getBestShift(img)
-        shifted = self.shift(img, shiftx, shifty)
-        img = shifted
+        # Normalize the pixel values to the range [0, 1]
+        image = image / 255.0
 
-        # DEBUG
-        # cv2.imwrite("output.png", img)
+        # Reshape the image to a 1D array to match the model's input requirements
+        image = image.reshape(-1)
 
-        # Normalize the image
-        img = img / 255.0
+        return image
 
-        # Reshape to 1D match the input of the model
-        img = img.reshape(-1)
+    def trim_empty_borders(self, image):
+        # Remove empty borders around the digit to reduce noise and improve classification accuracy
+        while np.sum(image[0]) == 0:
+            image = image[1:]
 
-        return img
+        while np.sum(image[:, 0]) == 0:
+            image = np.delete(image, 0, 1)
 
-    def trim(self, img):
-        while np.sum(img[0]) == 0:
-            img = img[1:]
+        while np.sum(image[-1]) == 0:
+            image = image[:-1]
 
-        while np.sum(img[:, 0]) == 0:
-            img = np.delete(img, 0, 1)
+        while np.sum(image[:, -1]) == 0:
+            image = np.delete(image, -1, 1)
 
-        while np.sum(img[-1]) == 0:
-            img = img[:-1]
-
-        while np.sum(img[:, -1]) == 0:
-            img = np.delete(img, -1, 1)
-
-        rows, cols = img.shape
-
+        # Resize the image to maintain a standard size
+        rows, cols = image.shape
         if rows > cols:
             factor = 20.0 / rows
             rows = 20
             cols = int(round(cols * factor))
-            img = cv2.resize(img, (cols, rows))
         else:
             factor = 20.0 / cols
             cols = 20
             rows = int(round(rows * factor))
-            img = cv2.resize(img, (cols, rows))
+        image = cv2.resize(image, (cols, rows))
 
-        colsPadding = (
-            int(math.ceil((28 - cols) / 2.0)),
-            int(math.floor((28 - cols) / 2.0)),
-        )
-        rowsPadding = (
-            int(math.ceil((28 - rows) / 2.0)),
-            int(math.floor((28 - rows) / 2.0)),
-        )
-        img = np.pad(img, (rowsPadding, colsPadding), "constant")
+        # Add padding to ensure the image is 28x28 pixels
+        col_padding = (int(math.ceil((28 - cols) / 2.0)), int(math.floor((28 - cols) / 2.0)))
+        row_padding = (int(math.ceil((28 - rows) / 2.0)), int(math.floor((28 - rows) / 2.0)))
+        image = np.pad(image, (row_padding, col_padding), "constant")
 
-        return img
+        return image
 
-    def getBestShift(self, img):
-        cy, cx = ndimage.center_of_mass(img)
-        rows, cols = img.shape
-        shiftx = np.round(cols / 2.0 - cx).astype(int)
-        shifty = np.round(rows / 2.0 - cy).astype(int)
+    def calculate_best_shift(self, image):
+        # Calculate the optimal shift to center the digit based on its center of mass
+        center_y, center_x = ndimage.center_of_mass(image)
+        rows, cols = image.shape
+        shift_x = np.round(cols / 2.0 - center_x).astype(int)
+        shift_y = np.round(rows / 2.0 - center_y).astype(int)
 
-        return shiftx, shifty
+        return shift_x, shift_y
 
-    def shift(self, img, sx, sy):
-        rows, cols = img.shape
-        M = np.float32([[1, 0, sx], [0, 1, sy]])
-        shifted = cv2.warpAffine(img, M, (cols, rows))
-        return shifted
+    def shift_image(self, image, shift_x, shift_y):
+        # Apply the calculated shift to the image to center the digit
+        rows, cols = image.shape
+        transformation_matrix = np.float32([[1, 0, shift_x], [0, 1, shift_y]])
+        shifted_image = cv2.warpAffine(image, transformation_matrix, (cols, rows))
+        return shifted_image
 
 
+# Load and preprocess MNIST dataset
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 x_train = x_train.reshape(x_train.shape[0], -1) / 255.0
 x_test = x_test.reshape(x_test.shape[0], -1) / 255.0
 
-model = NaiveBayes()
+# Train the Naive Bayes classifier
+model = NaiveBayesClassifier()
 model.fit(x_train, y_train)
-y_predicted = np.argmax(model.predict(x_test), axis=1)
-accuracy = np.mean(y_predicted == y_test)
-print("Accuracy: ", accuracy)
+
+# Evaluate the classifier
+y_pred = np.argmax(model.predict(x_test), axis=1)
+accuracy = np.mean(y_pred == y_test)
+print(f"Accuracy: {accuracy}")
 
 
-def digits():
-    digits_imgs = []
-    suffixes = [
-        "1",
-        "10",
-        "11",
-        "12",
-        "13",
-        "14",
-        "15",
-        "16",
-        "17",
-        "18",
-        "19",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8",
-        "9",
+def predict_digit_images_one():
+    # Initialize a list to hold preprocessed digit images
+    image_suffixes = [
+        "1", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19",
+        "2", "3", "4", "5", "6", "7", "8", "9",
     ]
-    for num in suffixes:
-        img_processor = ProcessImage("model/digits/digit" + (num) + ".png")
-        img = img_processor.preprocess()
-        digits_imgs.append(img)
+    preprocessed_images = []
 
-    predicted_digits = np.argmax(model.predict(digits_imgs), axis=1)
-    print("Predicted Digit: ", predicted_digits)
+    # Load and preprocess each image
+    for suffix in image_suffixes:
+        image_processor = ImagePreprocessor(f"model/testing_images/set_one/image{suffix}.png")
+        preprocessed_image = image_processor.preprocess()
+        preprocessed_images.append(preprocessed_image)
 
-    actual_digits = [7, 7, 0, 5, 3, 2, 1, 0, 8, 7, 4, 2, 9, 8, 5, 1, 1, 1, 7]
-    print("Actual Digits: ", actual_digits)
+    # Predict the digit for each preprocessed image
+    predicted_labels = np.argmax(model.predict(preprocessed_images), axis=1)
+    print(f"Predicted Digits: {predicted_labels}")
 
-    accuracy = np.mean(predicted_digits == actual_digits)
-    print("Accuracy: ", accuracy)
+    # Actual labels for the digits
+    true_labels = np.array([7, 7, 0, 5, 3, 2, 1, 0, 8, 7, 4, 2, 9, 8, 5, 1, 1, 1, 7])
+    print(f"Actual Digits: {true_labels}")
+
+    # Calculate and print the accuracy of the predictions
+    accuracy = np.mean(predicted_labels == true_labels)
+    print(f"Prediction Accuracy: {accuracy}")
 
 
-def r_digits():
-    digits_imgs = []
-    suffixes = [
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8",
-        "9",
-        "11",
-        "22",
-        "44",
-        "88",
-        "99",
-        "111",
+def predict_digit_images_two():
+    # Initialize a list to hold preprocessed digit images
+    image_suffixes = [
+        "1", "2", "3", "4", "5", "6", "7", "8", "9", "11", "22", "44", "88", "99", "111",
     ]
-    for num in suffixes:
-        img_processor = ProcessImage("model/r_digits/r_image_" + (num) + ".png")
-        img = img_processor.preprocess()
-        digits_imgs.append(img)
+    preprocessed_images = []
 
-    predicted_digits = np.argmax(model.predict(digits_imgs), axis=1)
-    print("Predicted Digit: ", predicted_digits)
+    # Load and preprocess each image
+    for suffix in image_suffixes:
+        image_processor = ImagePreprocessor(f"model/testing_images/set_two/image{suffix}.png")
+        preprocessed_image = image_processor.preprocess()
+        preprocessed_images.append(preprocessed_image)
 
-    actual_digits = [1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 4, 8, 9, 1]
-    print("Actual Digits: ", actual_digits)
+    # Predict the digit for each preprocessed image
+    predicted_labels = np.argmax(model.predict(preprocessed_images), axis=1)
+    print(f"Predicted Digits: {predicted_labels}")
 
-    accuracy = np.mean(predicted_digits == actual_digits)
-    print("Accuracy: ", accuracy)
+    # Actual labels for the digits
+    true_labels = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 4, 8, 9, 1])
+    print(f"Actual Digits: {true_labels}")
 
+    # Calculate and print the accuracy of the predictions
+    accuracy = np.mean(predicted_labels == true_labels)
+    print(f"Prediction Accuracy: {accuracy}")
 
-digits()
-r_digits()
+# Execute the functions to predict set one and two digit images
+predict_digit_images_one()
+predict_digit_images_two()
