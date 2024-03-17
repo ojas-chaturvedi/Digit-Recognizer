@@ -1,12 +1,24 @@
 # Overall
 .vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
 .DS_Store
 .obsidian/
+.idea/
 
-# LaTeX-specific
-*.aux
-*.out
-*.fdb_latexmk
-*.fls
-*.log
-*.synctex.gz
+# Python
+__pycache__/
+*.ipynb_checkpoints
+*.env
+*.venv
+env/
+venv/
+ENV/
+
+# SSH
+**/.ssh/id_*
+**/.ssh/*_id_*
+**/.ssh/known_hosts
