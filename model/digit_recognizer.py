@@ -17,7 +17,7 @@ class NaiveBayes:
             self.priors.append(np.mean(y == i))
             x_n = x[y == i]
             self.means.append(np.mean(x_n, axis=0))
-            self.variances.append(np.var(x_n, axis=0) + 0.01559)
+            self.variances.append(np.var(x_n, axis=0) + 0.01575)
 
     def predict(self, x):
         posteriors = []
