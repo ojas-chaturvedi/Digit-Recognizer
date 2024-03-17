@@ -4,6 +4,7 @@ import cv2
 import math
 from scipy import ndimage
 
+
 class NaiveBayes:
     def __init__(self):
         self.means = []
@@ -80,6 +81,7 @@ class ProcessImage:
 
         # Reshape to 1D match the input of the model
         img = img.reshape(-1)
+
         return img
 
     def trim(self, img):
@@ -122,7 +124,6 @@ class ProcessImage:
 
     def getBestShift(self, img):
         cy, cx = ndimage.center_of_mass(img)
-
         rows, cols = img.shape
         shiftx = np.round(cols / 2.0 - cx).astype(int)
         shifty = np.round(rows / 2.0 - cy).astype(int)
@@ -145,40 +146,6 @@ model.fit(x_train, y_train)
 y_predicted = np.argmax(model.predict(x_test), axis=1)
 accuracy = np.mean(y_predicted == y_test)
 print("Accuracy: ", accuracy)
-
-
-def r_digits():
-    digits_imgs = []
-    suffixes = [
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8",
-        "9",
-        "11",
-        "22",
-        "44",
-        "88",
-        "99",
-        "111",
-    ]
-    for num in suffixes:
-        img_processor = ProcessImage("r_digits/r_image_" + (num) + ".png")
-        img = img_processor.preprocess()
-        digits_imgs.append(img)
-
-    predicted_digits = np.argmax(model.predict(digits_imgs), axis=1)
-    print("Predicted Digit: ", predicted_digits)
-
-    actual_digits = [1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 4, 8, 9, 1]
-    print("Actual Digits: ", actual_digits)
-
-    accuracy = np.mean(predicted_digits == actual_digits)
-    print("Accuracy: ", accuracy)
 
 
 def digits():
@@ -205,7 +172,7 @@ def digits():
         "9",
     ]
     for num in suffixes:
-        img_processor = ProcessImage("digits/digit" + (num) + ".png")
+        img_processor = ProcessImage("model/digits/digit" + (num) + ".png")
         img = img_processor.preprocess()
         digits_imgs.append(img)
 
@@ -219,5 +186,39 @@ def digits():
     print("Accuracy: ", accuracy)
 
 
-r_digits()
+def r_digits():
+    digits_imgs = []
+    suffixes = [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "11",
+        "22",
+        "44",
+        "88",
+        "99",
+        "111",
+    ]
+    for num in suffixes:
+        img_processor = ProcessImage("model/r_digits/r_image_" + (num) + ".png")
+        img = img_processor.preprocess()
+        digits_imgs.append(img)
+
+    predicted_digits = np.argmax(model.predict(digits_imgs), axis=1)
+    print("Predicted Digit: ", predicted_digits)
+
+    actual_digits = [1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 4, 8, 9, 1]
+    print("Actual Digits: ", actual_digits)
+
+    accuracy = np.mean(predicted_digits == actual_digits)
+    print("Accuracy: ", accuracy)
+
+
 digits()
+r_digits()
