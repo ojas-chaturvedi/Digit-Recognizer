@@ -5,7 +5,7 @@ Purpose: To test the Gaussian Naïve Bayes classifier on online and self-made im
 """
 
 __author__ = "Ojas Chaturvedi"
-__github__ = "ojas-chaturvedi"
+__github__ = "github.com/ojas-chaturvedi"
 __license__ = "MIT"
 
 

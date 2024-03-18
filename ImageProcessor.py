@@ -5,7 +5,7 @@ Purpose: To process images before implementation in the Gaussian Naïve Bayes cl
 """
 
 __author__ = "Ojas Chaturvedi"
-__github__ = "ojas-chaturvedi"
+__github__ = "github.com/ojas-chaturvedi"
 __license__ = "MIT"
 
 

@@ -5,7 +5,7 @@ Purpose: To create a Gaussian Naïve Bayes classifier to recognize handwritten d
 """
 
 __author__ = "Ojas Chaturvedi"
-__github__ = "ojas-chaturvedi"
+__github__ = "github.com/ojas-chaturvedi"
 __license__ = "MIT"
 
 

@@ -5,7 +5,7 @@ Purpose: Initializes directory as a Python Package
 """
 
 __author__ = "Ojas Chaturvedi"
-__github__ = "ojas-chaturvedi"
+__github__ = "github.com/ojas-chaturvedi"
 __license__ = "MIT"
 
 
