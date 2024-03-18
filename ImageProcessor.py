@@ -21,7 +21,7 @@ class ImageProcessor:
         # Initialize the image processor with the path to the image to be processed
         self.image_path = image_path
 
-    def preprocess(self: object) -> np.ndarray:
+    def process(self: object) -> np.ndarray:
         # Load the image in grayscale
         image = cv2.imread(self.image_path, cv2.IMREAD_GRAYSCALE)
 

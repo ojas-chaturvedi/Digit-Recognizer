@@ -40,18 +40,18 @@ def set_one() -> None:
         "8",
         "9",
     ]
-    preprocessed_images = []
+    processed_images = []
 
-    # Load and preprocess each image
+    # Load and process each image
     for suffix in image_suffixes:
         image_processor = ImageProcessor(
             f"model/testing_images/set_one/image{suffix}.png"
         )
-        preprocessed_image = image_processor.preprocess()
-        preprocessed_images.append(preprocessed_image)
+        processed_image = image_processor.process()
+        processed_images.append(processed_image)
 
-    # Predict the digit for each preprocessed image
-    predicted_labels = np.argmax(model.predict(preprocessed_images), axis=1)
+    # Predict the digit for each processed image
+    predicted_labels = np.argmax(model.predict(processed_images), axis=1)
     print(f"Predicted Digits: {predicted_labels}")
 
     # Actual labels for the digits
@@ -82,18 +82,18 @@ def set_two() -> None:
         "99",
         "111",
     ]
-    preprocessed_images = []
+    processed_images = []
 
-    # Load and preprocess each image
+    # Load and process each image
     for suffix in image_suffixes:
         image_processor = ImageProcessor(
             f"model/testing_images/set_two/image{suffix}.png"
         )
-        preprocessed_image = image_processor.preprocess()
-        preprocessed_images.append(preprocessed_image)
+        processed_image = image_processor.process()
+        processed_images.append(processed_image)
 
-    # Predict the digit for each preprocessed image
-    predicted_labels = np.argmax(model.predict(preprocessed_images), axis=1)
+    # Predict the digit for each processed image
+    predicted_labels = np.argmax(model.predict(processed_images), axis=1)
     print(f"Predicted Digits: {predicted_labels}")
 
     # Actual labels for the digits
