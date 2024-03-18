@@ -106,8 +106,9 @@ def set_two() -> None:
 
 
 def main() -> None:
-    # Implementation of testing in ./main.py
-    pass
+    # Execute the functions to predict set one and two digit images
+    set_one()
+    set_two()
 
 
 if __name__ == "__main__":
