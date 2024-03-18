@@ -103,7 +103,7 @@ class ImageProcessor:
 
 
 def main() -> None:
-    # TODO Create example of Image Processor
+    # Implementation of image processor in ./predict_digit_images.py
     pass
 
 

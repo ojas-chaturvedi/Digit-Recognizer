@@ -106,7 +106,7 @@ def set_two() -> None:
 
 
 def main() -> None:
-    # TODO Create implementation of testing
+    # Implementation of testing in ./main.py
     pass
 
 

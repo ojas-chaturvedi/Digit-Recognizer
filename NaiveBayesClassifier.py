@@ -69,7 +69,7 @@ class NaiveBayesClassifier:
 
 
 def main() -> None:
-    # TODO Create model implementation
+    # Implementation of classifier model in ./main.py
     pass
 
 
