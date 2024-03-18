@@ -1,7 +1,7 @@
 #!/opt/homebrew/bin/python3
 """
 Name: __init__.py
-Purpose: Initializes directory as a Python Package
+Purpose: Initializes model directory as a Python Package
 """
 
 __author__ = "Ojas Chaturvedi"
