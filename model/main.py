@@ -26,12 +26,13 @@ x_test = x_test.reshape(x_test.shape[0], -1) / 255.0
 model = NaiveBayesClassifier()
 model.fit(x_train, y_train)
 
+# Evaluate the classifier
+y_pred = np.argmax(model.predict(x_test), axis=1)
+accuracy = np.mean(y_pred == y_test)
+
 
 def main() -> None:
-    # Evaluate the classifier
-    y_pred = np.argmax(model.predict(x_test), axis=1)
-    accuracy = np.mean(y_pred == y_test)
-    print(f"Accuracy: {accuracy}")
+    print(f"Accuracy of model: {accuracy}")
 
     # Implementation of testing on online and self-made images in ./predict_digit_images.py
 
