@@ -15,6 +15,7 @@ from keras.datasets import mnist
 
 # Import project code
 from NaiveBayesClassifier import NaiveBayesClassifier
+from predict_digit_images import set_one, set_two
 
 
 # Load and preprocess MNIST dataset
@@ -32,6 +33,10 @@ def main() -> None:
     y_pred = np.argmax(model.predict(x_test), axis=1)
     accuracy = np.mean(y_pred == y_test)
     print(f"Accuracy: {accuracy}")
+
+    # Execute the functions to predict set one and two digit images
+    set_one()
+    set_two()
 
 
 if __name__ == "__main__":
