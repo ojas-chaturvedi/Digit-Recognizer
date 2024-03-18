@@ -47,6 +47,7 @@ namex==0.0.7
 nest-asyncio==1.6.0
 numpy==1.26.4
 opencv-python==4.9.0.80
+opencv-python-headless==4.9.0.80
 opt-einsum==3.3.0
 packaging==23.2
 pandas==2.2.1
