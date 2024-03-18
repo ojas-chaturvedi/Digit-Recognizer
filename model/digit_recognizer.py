@@ -1,3 +1,14 @@
+#!/opt/homebrew/bin/python3
+"""
+Name: digit_recognizer.py
+Purpose: To implement a Gaussian Naïve Bayes classifier to recognize handwritten digits
+"""
+
+__author__ = "Ojas Chaturvedi"
+__github__ = "ojas-chaturvedi"
+__license__ = "MIT"
+
+
 # Import necessary libraries
 import numpy as np
 from keras.datasets import mnist
@@ -7,13 +18,13 @@ from scipy import ndimage
 
 
 class NaiveBayesClassifier:
-    def __init__(self):
+    def __init__(self: object) -> None:
         # Initialize lists to store means, variances, and priors for each class
         self.class_means = []
         self.class_variances = []
         self.class_priors = []
 
-    def fit(self, features, labels):
+    def fit(self: object, features: np.ndarray, labels: np.ndarray) -> None:
         # Train the classifier with features and labels
         self.unique_classes = np.unique(labels)
 
@@ -23,14 +34,21 @@ class NaiveBayesClassifier:
             self.class_means.append(np.mean(features_for_class, axis=0))
             self.class_variances.append(np.var(features_for_class, axis=0) + 0.01575)
 
-    def predict(self, features):
+    def predict(self: object, features: np.ndarray) -> np.ndarray:
         # Predict the class for each feature set in features
         class_posteriors = []
 
         for class_index in self.unique_classes:
             log_prior = np.log(self.class_priors[class_index])
             class_likelihood = np.sum(
-                np.log(self.gaussian_distribution(features, self.class_means[class_index], self.class_variances[class_index])), axis=1
+                np.log(
+                    self.gaussian_distribution(
+                        features,
+                        self.class_means[class_index],
+                        self.class_variances[class_index],
+                    )
+                ),
+                axis=1,
             )
             posterior = np.exp(class_likelihood) * np.exp(log_prior)
             class_posteriors.append(posterior)
@@ -44,19 +62,22 @@ class NaiveBayesClassifier:
 
         return class_posteriors
 
-    def gaussian_distribution(self, x, mean, variance):
+    def gaussian_distribution(
+        self: object, x: np.ndarray, mean: np.ndarray, variance: np.ndarray
+    ) -> np.ndarray:
         # Calculate the Gaussian distribution
         numerator = np.exp(-((x - mean) ** 2) / (2 * variance))
         denominator = np.sqrt(2 * np.pi * variance)
+
         return numerator / denominator
 
 
 class ImagePreprocessor:
-    def __init__(self, image_path):
+    def __init__(self: object, image_path) -> None:
         # Initialize the image processor with the path to the image to be processed
         self.image_path = image_path
 
-    def preprocess(self):
+    def preprocess(self: object) -> np.ndarray:
         # Load the image in grayscale
         image = cv2.imread(self.image_path, cv2.IMREAD_GRAYSCALE)
 
@@ -81,7 +102,7 @@ class ImagePreprocessor:
 
         return image
 
-    def trim_empty_borders(self, image):
+    def trim_empty_borders(self: object, image) -> np.ndarray:
         # Remove empty borders around the digit to reduce noise and improve classification accuracy
         while np.sum(image[0]) == 0:
             image = image[1:]
@@ -108,13 +129,19 @@ class ImagePreprocessor:
         image = cv2.resize(image, (cols, rows))
 
         # Add padding to ensure the image is 28x28 pixels
-        col_padding = (int(math.ceil((28 - cols) / 2.0)), int(math.floor((28 - cols) / 2.0)))
-        row_padding = (int(math.ceil((28 - rows) / 2.0)), int(math.floor((28 - rows) / 2.0)))
+        col_padding = (
+            int(math.ceil((28 - cols) / 2.0)),
+            int(math.floor((28 - cols) / 2.0)),
+        )
+        row_padding = (
+            int(math.ceil((28 - rows) / 2.0)),
+            int(math.floor((28 - rows) / 2.0)),
+        )
         image = np.pad(image, (row_padding, col_padding), "constant")
 
         return image
 
-    def calculate_best_shift(self, image):
+    def calculate_best_shift(self: object, image) -> np.int64:
         # Calculate the optimal shift to center the digit based on its center of mass
         center_y, center_x = ndimage.center_of_mass(image)
         rows, cols = image.shape
@@ -123,7 +150,7 @@ class ImagePreprocessor:
 
         return shift_x, shift_y
 
-    def shift_image(self, image, shift_x, shift_y):
+    def shift_image(self: object, image, shift_x, shift_y) -> np.ndarray:
         # Apply the calculated shift to the image to center the digit
         rows, cols = image.shape
         transformation_matrix = np.float32([[1, 0, shift_x], [0, 1, shift_y]])
@@ -146,17 +173,36 @@ accuracy = np.mean(y_pred == y_test)
 print(f"Accuracy: {accuracy}")
 
 
-def predict_digit_images_one():
+def predict_digit_images_one() -> None:
     # Initialize a list to hold preprocessed digit images
     image_suffixes = [
-        "1", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19",
-        "2", "3", "4", "5", "6", "7", "8", "9",
+        "1",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
     ]
     preprocessed_images = []
 
     # Load and preprocess each image
     for suffix in image_suffixes:
-        image_processor = ImagePreprocessor(f"model/testing_images/set_one/image{suffix}.png")
+        image_processor = ImagePreprocessor(
+            f"model/testing_images/set_one/image{suffix}.png"
+        )
         preprocessed_image = image_processor.preprocess()
         preprocessed_images.append(preprocessed_image)
 
@@ -173,16 +219,32 @@ def predict_digit_images_one():
     print(f"Prediction Accuracy: {accuracy}")
 
 
-def predict_digit_images_two():
+def predict_digit_images_two() -> None:
     # Initialize a list to hold preprocessed digit images
     image_suffixes = [
-        "1", "2", "3", "4", "5", "6", "7", "8", "9", "11", "22", "44", "88", "99", "111",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "11",
+        "22",
+        "44",
+        "88",
+        "99",
+        "111",
     ]
     preprocessed_images = []
 
     # Load and preprocess each image
     for suffix in image_suffixes:
-        image_processor = ImagePreprocessor(f"model/testing_images/set_two/image{suffix}.png")
+        image_processor = ImagePreprocessor(
+            f"model/testing_images/set_two/image{suffix}.png"
+        )
         preprocessed_image = image_processor.preprocess()
         preprocessed_images.append(preprocessed_image)
 
@@ -198,6 +260,12 @@ def predict_digit_images_two():
     accuracy = np.mean(predicted_labels == true_labels)
     print(f"Prediction Accuracy: {accuracy}")
 
-# Execute the functions to predict set one and two digit images
-predict_digit_images_one()
-predict_digit_images_two()
+
+def main() -> None:
+    # Execute the functions to predict set one and two digit images
+    predict_digit_images_one()
+    predict_digit_images_two()
+
+
+if __name__ == "__main__":
+    main()
