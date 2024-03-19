@@ -27,3 +27,16 @@ st.set_page_config(
     # layout="wide",
 )
 
+st.title(
+    """
+    :white[Handwritten Digit Recognizer]
+    """
+)
+st.markdown(
+    ":white[An image classification web app to predict a numerical handwritten digit.]"
+)
+st.markdown(
+    ":white[Accuracy of model with the MNIST dataset:] **:orange["
+    + str(accuracy * 100)
+    + "%]**"
+)
