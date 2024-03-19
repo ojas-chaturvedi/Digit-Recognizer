@@ -14,13 +14,13 @@ import numpy as np
 
 
 class NaiveBayesClassifier:
-    def __init__(self: object) -> None:
+    def __init__(self) -> None:
         # Initialize lists to store means, variances, and priors for each class
         self.class_means = []
         self.class_variances = []
         self.class_priors = []
 
-    def fit(self: object, features: np.ndarray, labels: np.ndarray) -> None:
+    def fit(self, features: np.ndarray, labels: np.ndarray) -> None:
         # Train the classifier with features and labels
         self.unique_classes = np.unique(labels)
 
@@ -30,7 +30,7 @@ class NaiveBayesClassifier:
             self.class_means.append(np.mean(features_for_class, axis=0))
             self.class_variances.append(np.var(features_for_class, axis=0) + 0.01575)
 
-    def predict(self: object, features: np.ndarray) -> np.ndarray:
+    def predict(self, features: np.ndarray) -> np.ndarray:
         # Predict the class for each feature set in features
         class_posteriors = []
 
@@ -59,7 +59,7 @@ class NaiveBayesClassifier:
         return class_posteriors
 
     def gaussian_distribution(
-        self: object, x: np.ndarray, mean: np.ndarray, variance: np.ndarray
+        self, x: np.ndarray, mean: np.ndarray, variance: np.ndarray
     ) -> np.ndarray:
         # Calculate the Gaussian distribution
         numerator = np.exp(-((x - mean) ** 2) / (2 * variance))

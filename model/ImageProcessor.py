@@ -17,13 +17,13 @@ import math
 
 
 class ImageProcessor:
-    def __init__(self: object, image_path) -> None:
         # Initialize the image processor with the path to the image to be processed
         self.image_path = image_path
+    def __init__(self, image_details) -> None:
 
-    def process(self: object) -> np.ndarray:
         # Load the image in grayscale
         image = cv2.imread(self.image_path, cv2.IMREAD_GRAYSCALE)
+    def process(self) -> np.ndarray:
 
         # Resize and invert the image to a 20x20 pixel size for uniformity with training data
         image = cv2.resize(255 - image, (20, 20), interpolation=cv2.INTER_AREA)
@@ -46,7 +46,7 @@ class ImageProcessor:
 
         return image
 
-    def trim_empty_borders(self: object, image) -> np.ndarray:
+    def trim_empty_borders(self, image) -> np.ndarray:
         # Remove empty borders around the digit to reduce noise and improve classification accuracy
         while np.sum(image[0]) == 0:
             image = image[1:]
@@ -85,7 +85,7 @@ class ImageProcessor:
 
         return image
 
-    def calculate_best_shift(self: object, image) -> np.int64:
+    def calculate_best_shift(self, image) -> np.int64:
         # Calculate the optimal shift to center the digit based on its center of mass
         center_y, center_x = ndimage.center_of_mass(image)
         rows, cols = image.shape
@@ -94,7 +94,7 @@ class ImageProcessor:
 
         return shift_x, shift_y
 
-    def shift_image(self: object, image, shift_x, shift_y) -> np.ndarray:
+    def shift_image(self, image, shift_x, shift_y) -> np.ndarray:
         # Apply the calculated shift to the image to center the digit
         rows, cols = image.shape
         transformation_matrix = np.float32([[1, 0, shift_x], [0, 1, shift_y]])
