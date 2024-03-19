@@ -32,7 +32,7 @@ accuracy = np.mean(y_pred == y_test)
 
 
 def main() -> None:
-    print(f"Accuracy of model: {accuracy}")
+    print(f"Accuracy of model with the MNIST dataset: {accuracy * 100}%")
 
     # Implementation of testing on online and self-made images in ./predict_digit_images.py
 
