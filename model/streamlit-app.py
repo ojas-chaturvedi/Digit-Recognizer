@@ -258,6 +258,27 @@ if file is not None:
                 + "</h1>",
                 unsafe_allow_html=True,
             )
+
+            left_column, right_column = st.columns(2)
+
+            # Display heatmap of predicted digit
+            plt.figure(figsize=(15, 15))
+            sns.heatmap(
+                model.class_means[predicted_digit[0]].reshape(28, 28),
+                annot=True,
+                cmap="YlGnBu",
+                fmt=".2f",
+                linewidths=0.5,
+                square=True,
+            )
+            plt.axis("off")
+            right_column.pyplot(plt)
+            right_column.markdown("^^ Heatmap of predicted digit")
+
+            # Display the uploaded image
+            left_column.image(img, use_column_width=True)
+            left_column.markdown("^^ Uploaded image")
+
 def main() -> None:
     pass
 
