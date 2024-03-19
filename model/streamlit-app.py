@@ -245,6 +245,11 @@ if file is not None:
             st.error(
                 ":white[Could not decode the image. Please upload a valid image file.]"
             )
+        else:
+            # Process image
+            image_processor = ImageProcessor(img)
+            final_image = image_processor.process()
+
 def main() -> None:
     pass
 
