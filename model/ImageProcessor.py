@@ -17,13 +17,26 @@ import math
 
 
 class ImageProcessor:
-        # Initialize the image processor with the path to the image to be processed
-        self.image_path = image_path
     def __init__(self, image_details) -> None:
+        # image_details can be 1 of 2 things: a path to an image (from the code), or the actual image (from the website)
 
-        # Load the image in grayscale
-        image = cv2.imread(self.image_path, cv2.IMREAD_GRAYSCALE)
+        # Initialize the image processor with the path to the image or image to be processed
+        self.image_details = image_details
+
+        # image_details is the actual image:
+        if isinstance(image_details, np.ndarray):
+            self.is_Image = True
+        # image_details is a path to an image
+        else:
+            self.is_Image = False
+
     def process(self) -> np.ndarray:
+        if self.is_Image == True:
+            # Initialize image variable name with image array
+            image = self.image_details
+        elif self.is_Image == False:
+            # Load the image with path in grayscale
+            image = cv2.imread(self.image_path, cv2.IMREAD_GRAYSCALE)
 
         # Resize and invert the image to a 20x20 pixel size for uniformity with training data
         image = cv2.resize(255 - image, (20, 20), interpolation=cv2.INTER_AREA)
