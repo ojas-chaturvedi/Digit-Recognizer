@@ -237,6 +237,14 @@ if file is not None:
         st.error(
             ":white[The uploaded file is empty. Please upload a valid image file.]"
         )
+    else:
+        # Use OpenCV to read the image data
+        img = cv2.imdecode(file_bytes, cv2.IMREAD_GRAYSCALE)
+
+        if img is None:
+            st.error(
+                ":white[Could not decode the image. Please upload a valid image file.]"
+            )
 def main() -> None:
     pass
 
