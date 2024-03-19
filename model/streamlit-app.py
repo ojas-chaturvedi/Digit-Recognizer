@@ -228,6 +228,15 @@ file = st.file_uploader(
     label_visibility="visible",  # Visibility of the label
 )
 
+if file is not None:
+    # Read the uploaded file as a byte stream
+    file_bytes = np.asarray(bytearray(file.read()), dtype=np.uint8)
+
+    # Check if the byte stream is empty
+    if file_bytes.size == 0:
+        st.error(
+            ":white[The uploaded file is empty. Please upload a valid image file.]"
+        )
 def main() -> None:
     pass
 
