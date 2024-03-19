@@ -210,3 +210,21 @@ st.markdown(
     + str(accuracy * 100)
     + "%]**"
 )
+
+file = st.file_uploader(
+    label="""
+        Please upload an image file. Check help button for details.
+    """,  # Short label explaining to the user what this file uploader is for
+    type=["jpg", "png"],  # Array of allowed extensions
+    accept_multiple_files=False,  # Boolean value to allow the user to upload multiple files at the same time
+    key=None,  # Unique key for the widget
+    help="""
+    :white[Note: Digits within images must be clearly visible, in focus, and centered. There must be no other objects in the image (shadows, lines, etc.).]
+        """,  # Tooltip that gets displayed next to the file uploader
+    on_change=None,  # Optional callback invoked when this file_uploader's value changes
+    args=None,  # Optional tuple of args to pass to the callback
+    kwargs=None,  # Optional dict of kwargs to pass to the callback
+    disabled=False,  # Optional boolean which can disable the file uploader
+    label_visibility="visible",  # Visibility of the label
+)
+
