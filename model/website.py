@@ -21,3 +21,9 @@ from main import model, accuracy
 from ImageProcessor import ImageProcessor
 
 
+st.set_page_config(
+    page_title="Handwritten Digit Recognizer",
+    page_icon="random",
+    # layout="wide",
+)
+
