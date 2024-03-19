@@ -250,6 +250,14 @@ if file is not None:
             image_processor = ImageProcessor(img)
             final_image = image_processor.process()
 
+            # Predict procesed image
+            predicted_digit = np.argmax(model.predict([final_image]), axis=1)
+            st.markdown(
+                "<h3 style='text-align: center; color: orange;'>Predicted Digit: "
+                + str(predicted_digit[0])
+                + "</h1>",
+                unsafe_allow_html=True,
+            )
 def main() -> None:
     pass
 
