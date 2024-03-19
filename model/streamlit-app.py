@@ -1,6 +1,6 @@
 #!/opt/homebrew/bin/python3
 """
-Name: website.py
+Name: streamlit-app.py
 Purpose: To showcase the Gaussian Naïve Bayes classifier to recognize handwritten digits
 """
 
@@ -228,3 +228,9 @@ file = st.file_uploader(
     label_visibility="visible",  # Visibility of the label
 )
 
+def main() -> None:
+    pass
+
+
+if __name__ == "__main__":
+    main()
