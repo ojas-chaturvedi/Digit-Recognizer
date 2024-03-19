@@ -27,6 +27,26 @@ st.set_page_config(
     # layout="wide",
 )
 
+# Add css to make the iframe fullscreen
+st.markdown(
+    """
+    <style>
+        iframe {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 st.title(
     """
     :white[Handwritten Digit Recognizer]
